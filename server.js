@@ -7,24 +7,23 @@ const https = require("https");
 var credentials = {};
 // Certificate
 if (process.env.NODE_ENV === "production") {
-  const privateKey = fs.readFileSync(
-    "/etc/letsencrypt/live/ravendel-frontend.hbwebsol.com/privkey.pem",
-    "utf8"
-  );
-  const certificate = fs.readFileSync(
-    "/etc/letsencrypt/live/ravendel-frontend.hbwebsol.com/cert.pem",
-    "utf8"
-  );
-  const ca = fs.readFileSync(
-    "/etc/letsencrypt/live/ravendel-frontend.hbwebsol.com/chain.pem",
-    "utf8"
-  );
-
-  credentials = {
-    key: privateKey,
-    cert: certificate,
-    ca: ca,
-  };
+  // const privateKey = fs.readFileSync(
+  //   "/etc/letsencrypt/live/ravendel-frontend.hbwebsol.com/privkey.pem",
+  //   "utf8"
+  // );
+  // const certificate = fs.readFileSync(
+  //   "/etc/letsencrypt/live/ravendel-frontend.hbwebsol.com/cert.pem",
+  //   "utf8"
+  // );
+  // const ca = fs.readFileSync(
+  //   "/etc/letsencrypt/live/ravendel-frontend.hbwebsol.com/chain.pem",
+  //   "utf8"
+  // );
+  // credentials = {
+  //   key: privateKey,
+  //   cert: certificate,
+  //   ca: ca,
+  // };
 }
 /* SSL Workout end */
 
@@ -121,7 +120,6 @@ if (process.env.NODE_ENV === "production") {
     console.log("HTTP Server running on port 80");
   });
 
-  
   httpsServer.listen(443, () => {
     console.log("HTTPS Server running on port 443");
   });
