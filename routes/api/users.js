@@ -9,6 +9,13 @@ const auth = require("../../middleware/auth");
 // user model
 const User = require("../../models/User");
 const ProductCat = require("../../models/ProductCat");
+
+// router.get("/all", (req, res) => {
+//   User.find({}).then((users) => {
+//     return res.status(200).json(users);
+//   });
+// });
+
 // @route   Post api/posts
 // @desc    Registering user
 // @access  public

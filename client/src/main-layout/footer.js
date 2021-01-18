@@ -2,12 +2,12 @@ import React from "react";
 import { makeStyles } from "@material-ui/styles";
 import { Typography } from "@material-ui/core";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(1),
     backgroundColor: "#e4e7ea",
-    textAlign: "center"
-  }
+    textAlign: "center",
+  },
 }));
 
 const Footer = () => {
@@ -16,13 +16,9 @@ const Footer = () => {
   return (
     <div className={classes.root}>
       <Typography variant="body1">
-        &copy; Copyright - 2020{" "}
-        <a
-          href="https://www.hbwebsol.com/"
-          target="_blank"
-          style={{ color: "#000" }}
-        >
-          HB WEBSOL
+        &copy; Copyright - 2021{" "}
+        <a href="#" target="_blank" style={{ color: "#000" }}>
+          Gandom Mart
         </a>
       </Typography>
       <Typography variant="caption">All rights reserved</Typography>
