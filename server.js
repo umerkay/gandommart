@@ -107,22 +107,24 @@ if (process.env.NODE_ENV === "production") {
 }
 
 if (process.env.NODE_ENV === "production") {
-  app.use(vhost("ravendel-frontend.hbwebsol.com", appFront));
-  app.use(vhost("ravendel-backend.hbwebsol.com", appAdmin));
+  // app.use(vhost("ravendel-frontend.hbwebsol.com", appFront));
+  // app.use(vhost("ravendel-backend.hbwebsol.com", appAdmin));
   /*const PORT = process.env.PORT || 80;
   app.listen(PORT, () => console.log(`server started on port ${PORT}`));*/
 
   // Starting both http & https servers
-  const httpServer = http.createServer(app);
-  const httpsServer = https.createServer(credentials, app);
+  // const httpServer = http.createServer(app);
+  // const httpsServer = https.createServer(credentials, app);
 
-  httpServer.listen(80, () => {
-    console.log("HTTP Server running on port 80");
-  });
+  // httpServer.listen(80, () => {
+  //   console.log("HTTP Server running on port 80");
+  // });
 
-  httpsServer.listen(443, () => {
-    console.log("HTTPS Server running on port 443");
-  });
+  // httpsServer.listen(443, () => {
+  //   console.log("HTTPS Server running on port 443");
+  // });
+  const PORT = process.env.PORT || 8000;
+  app.listen(PORT, () => console.log(`server started on port ${PORT}`));
 } else {
   const PORT = process.env.PORT || 8000;
   app.listen(PORT, () => console.log(`server started on port ${PORT}`));
