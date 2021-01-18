@@ -13,7 +13,7 @@ const settingResolvers = require("./setting");
 const taxResolvers = require("./tax");
 const shippingResolvers = require("./shipping");
 const couponResolvers = require("./coupon");
-const reviewResolvers = require("./Review");
+const reviewResolvers = require("./review");
 const product_attribute = require("./product_attribute");
 
 const customScalarResolver = {
