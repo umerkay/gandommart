@@ -107,8 +107,8 @@ if (process.env.NODE_ENV === "production") {
 }
 
 if (process.env.NODE_ENV === "production") {
-  // app.use(vhost("ravendel-frontend.hbwebsol.com", appFront));
-  // app.use(vhost("ravendel-backend.hbwebsol.com", appAdmin));
+  app.use("/", appFront);
+  app.use("/admin", appAdmin);
   /*const PORT = process.env.PORT || 80;
   app.listen(PORT, () => console.log(`server started on port ${PORT}`));*/
 
