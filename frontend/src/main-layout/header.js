@@ -32,6 +32,7 @@ const Header = (props) => {
       setThemeSetting(props.home.homepage);
     }
   }, [props.home.homepage]);
+  console.log(themeSetting);
 
   const toggleCart = (e) => {
     if (e.type === "keydown" && (e.key === "Tab" || e.key === "Shift")) {
@@ -50,14 +51,14 @@ const Header = (props) => {
                 <Link to="/">
                   {themeSetting.appearance &&
                   themeSetting.appearance.theme &&
-                  themeSetting.appearance.theme.logo ? (
+                  themeSetting.appearance.theme.medium ? (
                     <img
-                      src={themeSetting.appearance.theme.logo.original}
+                      src={themeSetting.appearance.theme.logo.medium}
                       alt="Logo"
                       className="logo"
                     />
                   ) : (
-                    <Typography variant="h3">Ravendel</Typography>
+                    <Typography variant="h3">Gandom Mart</Typography>
                   )}
                 </Link>
               </Grid>
