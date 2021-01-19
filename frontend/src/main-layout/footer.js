@@ -20,13 +20,13 @@ const Footer = () => {
               <Grid item md={4} sm={12} xs={12}>
                 <Box textAlign="left">
                   <Typography variant="h4" className="color-white">
-                    Ravendel
+                    Gandom Mart
                   </Typography>
-                  <Typography variant="subtitle1" className="footer-subtitle">
+                  {/* <Typography variant="subtitle1" className="footer-subtitle">
                     To sell online what you need is a lightning-fast platform
                     with easy to use user interface. With Ravendel deliver
                     exceptional digital experiences to your customers.
-                  </Typography>
+                  </Typography> */}
                 </Box>
               </Grid>
               <Grid item md={4} sm={6} xs={6}>
@@ -100,7 +100,7 @@ const Footer = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              HB WEBSOL
+              Gandom Mart
             </a>
           </Typography>
         </Box>

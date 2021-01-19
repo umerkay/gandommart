@@ -7,7 +7,7 @@ import {
   Collapse,
   colors,
   ListItemIcon,
-  ListItemText
+  ListItemText,
 } from "@material-ui/core";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
@@ -20,7 +20,7 @@ const MenuBar = () => {
   const classes = useStyles();
   const [menuName, setMenuName] = useState("");
 
-  const handleClick = name => {
+  const handleClick = (name) => {
     if (name === menuName) {
       setMenuName("");
     } else {
@@ -28,8 +28,8 @@ const MenuBar = () => {
     }
   };
 
-  const menuListing = menus => {
-    return menus.map(menu => {
+  const menuListing = (menus) => {
+    return menus.map((menu) => {
       if (!menu.children) {
         return (
           <Link to={menu.url} key={menu.name}>
@@ -59,7 +59,11 @@ const MenuBar = () => {
                 {menu.icon && <Icon fontSize="small">{menu.icon}</Icon>}
               </ListItemIcon>
               <ListItemText className={classes.itemtext} primary={menu.name} />
-              {menuName === menu.name ? <ExpandLess  fontSize="small"/> : <ExpandMore  fontSize="small"/>}
+              {menuName === menu.name ? (
+                <ExpandLess fontSize="small" />
+              ) : (
+                <ExpandMore fontSize="small" />
+              )}
             </Button>
           </ListItem>
           <Collapse
@@ -78,11 +82,11 @@ const MenuBar = () => {
   return <List component="nav">{menuListing(menuItems.menu)}</List>;
 };
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   item: {
     display: "flex",
     paddingTop: 0,
-    paddingBottom: 0
+    paddingBottom: 0,
   },
   button: {
     color: colors.blueGrey[800],
@@ -94,17 +98,18 @@ const useStyles = makeStyles(theme => ({
     fontWeight: theme.typography.fontWeightMedium,
   },
   icons: {
-    minWidth: "30px !important"
+    minWidth: "30px !important",
   },
   itemtext: {
     textAlign: "left !important",
-    fontSize: 10
+    fontSize: 10,
+    color: "white",
   },
   collapse: {
     backgroundColor: "#f5f5f5",
     padding: "0px 10px",
-    paddingLeft: 25
-  }
+    paddingLeft: 25,
+  },
 }));
 
 export default MenuBar;
