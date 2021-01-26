@@ -107,8 +107,8 @@ if (process.env.NODE_ENV === "production") {
 }
 
 if (process.env.NODE_ENV === "production") {
-  app.use("/", appFront);
   app.use("/admin", appAdmin);
+  app.use("/", appFront);
   // app.use("/front", appFront);
   /*const PORT = process.env.PORT || 80;
   app.listen(PORT, () => console.log(`server started on port ${PORT}`));*/
