@@ -50,10 +50,10 @@ const AddCustomer = () => {
       {Customers.loading && <Loading />}
       <form>
         <TopBar
-          title='Add Customer'
+          title="Add Customer"
           onSubmit={addCustomer}
-          submitTitle='Add'
-          backLink={"/all-customer"}
+          submitTitle="Add"
+          backLink={"/admin/all-customer"}
         />
         <Grid
           container
@@ -61,54 +61,54 @@ const AddCustomer = () => {
           className={classes.secondmainrow}
         >
           <Grid item lg={12}>
-            <CardBlocks title='Add Customer' nomargin>
+            <CardBlocks title="Add Customer" nomargin>
               <Grid container spacing={4}>
                 <Grid item md={3} sm={6} xs={12}>
                   <TextInput
                     value={customer.first_name}
-                    label='First Name'
-                    name='first_name'
+                    label="First Name"
+                    name="first_name"
                     onInputChange={handleChange}
                   />
                 </Grid>
                 <Grid item md={3} sm={6} xs={12}>
                   <TextInput
                     value={customer.last_name}
-                    label='Last Name'
-                    name='last_name'
+                    label="Last Name"
+                    name="last_name"
                     onInputChange={handleChange}
                   />
                 </Grid>
                 <Grid item md={3} sm={6} xs={12}>
                   <TextInput
                     value={customer.email}
-                    type='email'
-                    label='Email'
-                    name='email'
+                    type="email"
+                    label="Email"
+                    name="email"
                     onInputChange={handleChange}
                   />
                 </Grid>
                 <Grid item md={3} sm={6} xs={12}>
                   <PasswordInput
-                    name='password'
+                    name="password"
                     value={customer.password}
-                    label='Password'
+                    label="Password"
                     onInputChange={handleChange}
                   />
                 </Grid>
                 <Grid item md={3} sm={6} xs={12}>
                   <TextInput
                     value={customer.company}
-                    label='Company'
-                    name='company'
+                    label="Company"
+                    name="company"
                     onInputChange={handleChange}
                   />
                 </Grid>
                 <Grid item md={3} sm={6} xs={12}>
                   <TextInput
                     value={customer.phone}
-                    label='Phone'
-                    name='phone'
+                    label="Phone"
+                    name="phone"
                     onInputChange={handleChange}
                   />
                 </Grid>

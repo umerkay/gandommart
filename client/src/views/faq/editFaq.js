@@ -65,10 +65,10 @@ const EditFAQ = (props) => {
       {blogState.loading ? <Loading /> : null}
       <form>
         <TopBar
-          title='Edit FAQ'
+          title="Edit FAQ"
           onSubmit={updateFaq}
-          submitTitle='Update'
-          backLink={"/all-faq"}
+          submitTitle="Update"
+          backLink={"/admin/all-faq"}
         />
 
         <Grid
@@ -77,49 +77,49 @@ const EditFAQ = (props) => {
           className={classes.secondmainrow}
         >
           <Grid item lg={9} md={12} xs={12}>
-            <CardBlocks title='FAQ Information' nomargin>
-              <Box component='div' mb={2}>
+            <CardBlocks title="FAQ Information" nomargin>
+              <Box component="div" mb={2}>
                 <TextField
-                  id='title'
-                  label='Title'
-                  name='title'
+                  id="title"
+                  label="Title"
+                  name="title"
                   onChange={handleChange}
-                  variant='outlined'
+                  variant="outlined"
                   value={faq.title}
                   fullWidth
                 />
               </Box>
-              <Box component='div'>
-                {!blogState.loading ? 
+              <Box component="div">
+                {!blogState.loading ? (
                   <TinymceEditor
                     value={faq.content}
                     onEditorChange={(value) =>
                       setFaq({ ...faq, ["content"]: value })
                     }
                   />
-                : null}
+                ) : null}
               </Box>
             </CardBlocks>
           </Grid>
 
           <Grid item lg={3} md={12} xs={12}>
-            <CardBlocks title='Status' nomargin>
+            <CardBlocks title="Status" nomargin>
               <RadioGroup
-                defaultValue='Publish'
-                name='status'
+                defaultValue="Publish"
+                name="status"
                 onChange={handleChange}
                 row
                 value={faq.status}
               >
                 <FormControlLabel
-                  value='Publish'
+                  value="Publish"
                   control={<StyledRadio />}
-                  label='Publish'
+                  label="Publish"
                 />
                 <FormControlLabel
-                  value='Draft'
+                  value="Draft"
                   control={<StyledRadio />}
-                  label='Draft'
+                  label="Draft"
                 />
               </RadioGroup>
             </CardBlocks>

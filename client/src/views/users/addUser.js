@@ -37,7 +37,7 @@ const AddUser = () => {
   }, [UsersState.users]);
 
   const fileChange = (e) => {
-    setuser({ ...user, ['image']: e.target.files[0] });
+    setuser({ ...user, ["image"]: e.target.files[0] });
     setfeatureImage(null);
     setfeatureImage(URL.createObjectURL(e.target.files[0]));
   };
@@ -58,14 +58,14 @@ const AddUser = () => {
 
       <form>
         <TopBar
-          title='Add User'
+          title="Add User"
           onSubmit={addUser}
-          submitTitle='Add'
-          backLink={"/all-users"}
+          submitTitle="Add"
+          backLink={"/admin/all-users"}
         />
         <Grid container spacing={3} className={classes.secondmainrow}>
           <Grid item xs={12}>
-            <CardBlocks title='User Information' nomargin>
+            <CardBlocks title="User Information" nomargin>
               <Grid container spacing={4}>
                 <Grid item xl={2} lg={3} md={4} xs={12}>
                   <FeaturedImageComponent
@@ -75,34 +75,34 @@ const AddUser = () => {
                   />
                 </Grid>
                 <Grid item md={6} xs={12}>
-                  <Box component='div' mb={2}>
+                  <Box component="div" mb={2}>
                     <TextInput
                       value={user.name}
-                      label='Name'
-                      name='name'
+                      label="Name"
+                      name="name"
                       onInputChange={handleChange}
                     />
                   </Box>
-                  <Box component='div' mb={2}>
+                  <Box component="div" mb={2}>
                     <TextInput
-                      type='email'
+                      type="email"
                       value={user.email}
-                      label='Email'
-                      name='email'
+                      label="Email"
+                      name="email"
                       onInputChange={handleChange}
                     />
                   </Box>
-                  <Box component='div' mb={2}>
+                  <Box component="div" mb={2}>
                     <PasswordInput
-                      name='password'
+                      name="password"
                       value={user.password}
-                      label='Password'
+                      label="Password"
                       onInputChange={handleChange}
                     />
                   </Box>
-                  <Box component='div'>
+                  <Box component="div">
                     <SelectComponent
-                      label='Role'
+                      label="Role"
                       onSelecteChange={(val) =>
                         setuser({ ...user, ["role"]: val })
                       }
@@ -113,7 +113,7 @@ const AddUser = () => {
                         "Author",
                         "User",
                       ]}
-                      name='role'
+                      name="role"
                       value={user.role}
                     />
                   </Box>
@@ -128,7 +128,6 @@ const AddUser = () => {
 };
 
 export default AddUser;
-
 
 // Backup for user upload image
 //   const [featureImage, setfeatureImage] = useState(null);
@@ -155,28 +154,25 @@ export default AddUser;
 //     setfeatureImage(URL.createObjectURL(e.target.files[0]));
 //   };
 
-
-
-
-  // {featureImage !== null && (
-  //   <Box className={classes.feautedImageBox}>
-  //     <img
-  //       src={featureImage}
-  //       className={classes.feautedImageBoxPreview}
-  //       alt="user-thumbnail"
-  //     />
-  //   </Box>
-  // )}
-  // <Input
-  //   className={classes.input}
-  //   style={{ display: "none" }}
-  //   id="image"
-  //   type="file"
-  //   onChange={fileChange}
-  //   name="image"
-  // />
-  // <label htmlFor="image" className={classes.feautedImage}>
-  //   {featureImage !== null
-  //     ? "Change Featured Image"
-  //     : "Set Featured Image"}
-  // </label>
+// {featureImage !== null && (
+//   <Box className={classes.feautedImageBox}>
+//     <img
+//       src={featureImage}
+//       className={classes.feautedImageBoxPreview}
+//       alt="user-thumbnail"
+//     />
+//   </Box>
+// )}
+// <Input
+//   className={classes.input}
+//   style={{ display: "none" }}
+//   id="image"
+//   type="file"
+//   onChange={fileChange}
+//   name="image"
+// />
+// <label htmlFor="image" className={classes.feautedImage}>
+//   {featureImage !== null
+//     ? "Change Featured Image"
+//     : "Set Featured Image"}
+// </label>

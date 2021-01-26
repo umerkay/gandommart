@@ -15,9 +15,9 @@ import {
   IconButton,
   Button,
   Tooltip,
-  useMediaQuery
+  useMediaQuery,
 } from "@material-ui/core";
-import {  useTheme } from '@material-ui/styles';
+import { useTheme } from "@material-ui/styles";
 import { Link } from "react-router-dom";
 import { customersAction, customerDeleteAction } from "../../store/action";
 import jumpTo from "../../utils/navigation";
@@ -25,13 +25,15 @@ import { isEmpty } from "../../utils/helper";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import viewStyles from "../viewStyles";
-import {convertDateToStringFormat} from "../utils/convertDate";
+import { convertDateToStringFormat } from "../utils/convertDate";
 import { useDispatch, useSelector } from "react-redux";
-import {Alert, Loading} from '../components';
+import { Alert, Loading } from "../components";
+import { CSVLink } from "react-csv";
+import SearchBar from "../components/SearchBar";
 
 const AllCustomers = () => {
   const theme = useTheme();
-  const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
+  const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
   const classes = viewStyles();
   const dispatch = useDispatch();
   const Customers = useSelector((state) => state.customers);
@@ -43,6 +45,10 @@ const AllCustomers = () => {
       dispatch(customersAction());
     }
   }, []);
+  const [dataToShow, setDataToShow] = useState(Customers.customers);
+  useEffect(() => {
+    setDataToShow(Customers.customers);
+  }, [Customers]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -63,27 +69,54 @@ const AllCustomers = () => {
 
             <CardHeader
               action={
-                <Link to="/add-customer">
-                  <Button
-                    color="primary"
-                    className={classes.addUserBtn}
-                    size="small"
-                    variant="contained"
-                  >
-                    Add Customer
-                  </Button>
-                </Link>
+                <>
+                  <Link to="/admin/add-customer">
+                    <Button
+                      color="primary"
+                      className={classes.addUserBtn}
+                      size="small"
+                      variant="contained"
+                    >
+                      Add Customer
+                    </Button>
+                  </Link>
+                  <span>
+                    <Button
+                      color="primary"
+                      className={classes.addUserBtn}
+                      size="small"
+                      variant="contained"
+                    >
+                      <CSVLink
+                        filename={
+                          "customers_" +
+                          new Date().toLocaleDateString() +
+                          ".csv"
+                        }
+                        data={Customers.customers}
+                      >
+                        Download CSV
+                      </CSVLink>
+                    </Button>
+                  </span>
+                </>
               }
               title="All Customers"
             />
             <Divider />
+            <div>
+              <SearchBar
+                data={Customers.customers.map((c) => ({
+                  ...c,
+                  name: c.first_name + c.last_name,
+                }))}
+                field={"name"}
+                onQuery={(data) => setDataToShow(data)}
+              ></SearchBar>
+            </div>
             <CardContent>
               <TableContainer className={classes.container}>
-                <Table
-                  stickyHeader
-                  aria-label="customers-table"
-                  size="small"
-                >
+                <Table stickyHeader aria-label="customers-table" size="small">
                   <TableHead>
                     <TableRow>
                       <TableCell>Name</TableCell>
@@ -93,7 +126,7 @@ const AllCustomers = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {Customers.customers
+                    {dataToShow
                       .slice(
                         page * rowsPerPage,
                         page * rowsPerPage + rowsPerPage
@@ -104,7 +137,9 @@ const AllCustomers = () => {
                             {customer.first_name + " " + customer.last_name}
                           </TableCell>
                           <TableCell>{customer.email}</TableCell>
-                          <TableCell>{convertDateToStringFormat(customer.date)}</TableCell>
+                          <TableCell>
+                            {convertDateToStringFormat(customer.date)}
+                          </TableCell>
                           <TableCell>
                             <Tooltip title="Edit Customer" aria-label="edit">
                               <IconButton

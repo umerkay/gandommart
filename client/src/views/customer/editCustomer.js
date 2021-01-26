@@ -15,9 +15,9 @@ import {
   Tooltip,
   FormControlLabel,
   Checkbox,
-  useMediaQuery
+  useMediaQuery,
 } from "@material-ui/core";
-import {  useTheme } from '@material-ui/styles';
+import { useTheme } from "@material-ui/styles";
 import {
   customerUpdateAction,
   addressbookAddAction,
@@ -34,7 +34,14 @@ import PhoneIcon from "@material-ui/icons/Phone";
 import HomeIcon from "@material-ui/icons/Home";
 import Rating from "@material-ui/lab/Rating";
 import { isEmpty } from "../../utils/helper";
-import { Loading, TextInput, PasswordInput, TopBar, Alert, CardBlocks } from "../components";
+import {
+  Loading,
+  TextInput,
+  PasswordInput,
+  TopBar,
+  Alert,
+  CardBlocks,
+} from "../components";
 import { useDispatch, useSelector } from "react-redux";
 
 var SingleCustomerObject = {
@@ -63,7 +70,7 @@ var customerObj = {
 
 const EditCustomer = (props) => {
   const theme = useTheme();
-  const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
+  const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
   const classes = viewStyles();
   const dispatch = useDispatch();
   const Customers = useSelector((state) => state.customers);
@@ -154,110 +161,114 @@ const EditCustomer = (props) => {
           title="Edit Customer"
           onSubmit={updateCustomer}
           submitTitle="Update"
-          backLink={"/all-customer"}
+          backLink={"/admin/all-customer"}
         />
 
         {/* ==============Customer Details============== */}
 
-        <Grid container spacing={isSmall ? 2 : 4} className={classes.secondmainrow}>
+        <Grid
+          container
+          spacing={isSmall ? 2 : 4}
+          className={classes.secondmainrow}
+        >
           <Grid item lg={12}>
-              <CardBlocks title="Customer Information" nomargin>
-                <Grid container spacing={isSmall ? 2 : 4}>
-                  <Grid item md={3} sm={6} xs={12}>
-                    <TextInput
-                      value={customer.first_name}
-                      label="First Name"
-                      name="first_name"
-                      onInputChange={handleChange}
-                    />
-                  </Grid>
-                  <Grid item md={3} sm={6} xs={12}>
-                    <TextInput
-                      value={customer.last_name}
-                      label="Last Name"
-                      name="last_name"
-                      onInputChange={handleChange}
-                    />
-                  </Grid>
-                  <Grid item md={3} sm={6} xs={12}>
-                    <TextInput
-                      value={customer.email}
-                      label="Email"
-                      name="email"
-                      onInputChange={handleChange}
-                      type="email"
-                    />
-                  </Grid>
-                  <Grid item md={3} sm={6} xs={12}>
-                    <PasswordInput
-                      name="password"
-                      value={customer.password}
-                      label="Password"
-                      onInputChange={handleChange}
-                    />
-                  </Grid>
-                  <Grid item md={3} sm={6} xs={12}>
-                    <TextInput
-                      value={customer.company}
-                      label="Company"
-                      name="company"
-                      onInputChange={handleChange}
-                    />
-                  </Grid>
-                  <Grid item md={3} sm={6} xs={12}>
-                    <TextInput
-                      value={customer.phone}
-                      label="Phone"
-                      name="phone"
-                      onInputChange={handleChange}
-                    />
-                  </Grid>
+            <CardBlocks title="Customer Information" nomargin>
+              <Grid container spacing={isSmall ? 2 : 4}>
+                <Grid item md={3} sm={6} xs={12}>
+                  <TextInput
+                    value={customer.first_name}
+                    label="First Name"
+                    name="first_name"
+                    onInputChange={handleChange}
+                  />
                 </Grid>
+                <Grid item md={3} sm={6} xs={12}>
+                  <TextInput
+                    value={customer.last_name}
+                    label="Last Name"
+                    name="last_name"
+                    onInputChange={handleChange}
+                  />
+                </Grid>
+                <Grid item md={3} sm={6} xs={12}>
+                  <TextInput
+                    value={customer.email}
+                    label="Email"
+                    name="email"
+                    onInputChange={handleChange}
+                    type="email"
+                  />
+                </Grid>
+                <Grid item md={3} sm={6} xs={12}>
+                  <PasswordInput
+                    name="password"
+                    value={customer.password}
+                    label="Password"
+                    onInputChange={handleChange}
+                  />
+                </Grid>
+                <Grid item md={3} sm={6} xs={12}>
+                  <TextInput
+                    value={customer.company}
+                    label="Company"
+                    name="company"
+                    onInputChange={handleChange}
+                  />
+                </Grid>
+                <Grid item md={3} sm={6} xs={12}>
+                  <TextInput
+                    value={customer.phone}
+                    label="Phone"
+                    name="phone"
+                    onInputChange={handleChange}
+                  />
+                </Grid>
+              </Grid>
             </CardBlocks>
           </Grid>
 
           {/* ==============Address Books============== */}
 
           <Grid item md={4} sm={12} xs={12}>
-              <CardBlocks title={`${editMode ? "Edit" : "Add"} Adress`} >
-                <Grid container spacing={2}>
-                  {addressInput("First Name", "first_name")}
+            <CardBlocks title={`${editMode ? "Edit" : "Add"} Adress`}>
+              <Grid container spacing={2}>
+                {addressInput("First Name", "first_name")}
 
-                  {addressInput("Last Name", "last_name")}
+                {addressInput("Last Name", "last_name")}
 
-                  {addressInput("Company", "company")}
+                {addressInput("Company", "company")}
 
-                  {addressInput("Phone", "phone")}
+                {addressInput("Phone", "phone")}
 
-                  {addressInput("Address line1", "address_line1")}
+                {addressInput("Address line1", "address_line1")}
 
-                  {addressInput("Address line2", "address_line2")}
+                {addressInput("Address line2", "address_line2")}
 
-                  {addressInput("City", "city")}
+                {addressInput("City", "city")}
 
-                  {addressInput("State", "state")}
+                {addressInput("State", "state")}
 
-                  {addressInput("Country", "country")}
+                {addressInput("Country", "country")}
 
-                  {addressInput("Pincode", "pincode")}
-                  <Grid item md={12}>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          color="primary"
-                          checked={singleCustomer.default_address}
-                          onChange={(e) =>
-                            setSingleCustomer({
-                              ...singleCustomer,
-                              default_address: e.target.checked,
-                            })
-                          }
-                        />
-                      }
-                      label="Make it Default Address"
-                    />
-                  </Grid>
+                {addressInput("Pincode", "pincode")}
+                <Grid item md={12}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        color="primary"
+                        checked={singleCustomer.default_address}
+                        onChange={(e) =>
+                          setSingleCustomer({
+                            ...singleCustomer,
+                            default_address: e.target.checked,
+                          })
+                        }
+                      />
+                    }
+                    label="Make it Default Address"
+                  />
                 </Grid>
+              </Grid>
               <CardActions>
                 <Button
                   size="small"

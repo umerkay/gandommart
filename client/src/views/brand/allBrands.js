@@ -15,9 +15,9 @@ import {
   IconButton,
   Button,
   Tooltip,
-  useMediaQuery
+  useMediaQuery,
 } from "@material-ui/core";
-import {  useTheme } from '@material-ui/styles';
+import { useTheme } from "@material-ui/styles";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import { Link } from "react-router-dom";
@@ -26,15 +26,16 @@ import viewStyles from "../viewStyles.js";
 import { isEmpty } from "../../utils/helper";
 import { brandsAction, brandDeleteAction } from "../../store/action";
 import { useDispatch, useSelector } from "react-redux";
-import {Loading, Alert} from '../components';
-import {convertDateToStringFormat} from '../utils/convertDate';
+import { Loading, Alert } from "../components";
+import { convertDateToStringFormat } from "../utils/convertDate";
+import { CSVLink } from "react-csv";
 
-const AllBrands = props => {
+const AllBrands = (props) => {
   const theme = useTheme();
-  const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
+  const isSmall = useMediaQuery(theme.breakpoints.down("sm"));
   const classes = viewStyles();
   const dispatch = useDispatch();
-  const Brands = useSelector(state => state.brands);
+  const Brands = useSelector((state) => state.brands);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -48,7 +49,7 @@ const AllBrands = props => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = event => {
+  const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
@@ -63,27 +64,42 @@ const AllBrands = props => {
 
             <CardHeader
               action={
-                <Link to="/add-brand">
-                  <Button
-                    color="primary"
-                    className={classes.addUserBtn}
-                    size="small"
-                    variant="contained"
-                  >
-                    Add New Brand
-                  </Button>
-                </Link>
+                <>
+                  <Link to="/admin/add-brand">
+                    <Button
+                      color="primary"
+                      className={classes.addUserBtn}
+                      size="small"
+                      variant="contained"
+                    >
+                      Add New Brand
+                    </Button>
+                  </Link>
+                  <span>
+                    <Button
+                      color="primary"
+                      className={classes.addUserBtn}
+                      size="small"
+                      variant="contained"
+                    >
+                      <CSVLink
+                        filename={
+                          "brands_" + new Date().toLocaleDateString() + ".csv"
+                        }
+                        data={Brands.brands}
+                      >
+                        Download CSV
+                      </CSVLink>
+                    </Button>
+                  </span>
+                </>
               }
               title="All Brands"
             />
             <Divider />
             <CardContent>
               <TableContainer className={classes.container}>
-                <Table
-                  stickyHeader
-                  aria-label="brands-table"
-                  size="small"
-                >
+                <Table stickyHeader aria-label="brands-table" size="small">
                   <TableHead>
                     <TableRow>
                       <TableCell>Brand Name</TableCell>
@@ -97,10 +113,12 @@ const AllBrands = props => {
                         page * rowsPerPage,
                         page * rowsPerPage + rowsPerPage
                       )
-                      .map(brand => (
+                      .map((brand) => (
                         <TableRow key={brand.id} hover>
                           <TableCell>{brand.name}</TableCell>
-                          <TableCell>{convertDateToStringFormat(brand.date)}</TableCell>
+                          <TableCell>
+                            {convertDateToStringFormat(brand.date)}
+                          </TableCell>
                           <TableCell>
                             <Tooltip title="Edit Brand" aria-label="edit">
                               <IconButton

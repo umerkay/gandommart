@@ -14,7 +14,7 @@ import {
   TablePagination,
   IconButton,
   Button,
-  Tooltip
+  Tooltip,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,13 +24,14 @@ import { isEmpty } from "../../utils/helper";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import viewStyles from "../viewStyles";
-import {Alert, Loading} from '../components';
-import {convertDateToStringFormat} from '../utils/convertDate';
+import { Alert, Loading } from "../components";
+import { convertDateToStringFormat } from "../utils/convertDate";
+import { CSVLink } from "react-csv";
 
 const AllCoupons = () => {
   const classes = viewStyles();
   const dispatch = useDispatch();
-  const Coupons = useSelector(state => state.coupons)
+  const Coupons = useSelector((state) => state.coupons);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -44,7 +45,7 @@ const AllCoupons = () => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = event => {
+  const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
@@ -58,27 +59,42 @@ const AllCoupons = () => {
             {Coupons.loading && <Loading />}
             <CardHeader
               action={
-                <Link to="/add-coupon">
-                  <Button
-                    color="primary"
-                    className={classes.addUserBtn}
-                    size="small"
-                    variant="contained"
-                  >
-                    Add Coupon
-                  </Button>
-                </Link>
+                <>
+                  <Link to="/admin/add-coupon">
+                    <Button
+                      color="primary"
+                      className={classes.addUserBtn}
+                      size="small"
+                      variant="contained"
+                    >
+                      Add Coupon
+                    </Button>
+                  </Link>
+                  <span>
+                    <Button
+                      color="primary"
+                      className={classes.addUserBtn}
+                      size="small"
+                      variant="contained"
+                    >
+                      <CSVLink
+                        filename={
+                          "coupons_" + new Date().toLocaleDateString() + ".csv"
+                        }
+                        data={Coupons.coupons}
+                      >
+                        Download CSV
+                      </CSVLink>
+                    </Button>
+                  </span>
+                </>
               }
               title="All Coupons"
             />
             <Divider />
             <CardContent>
               <TableContainer className={classes.container}>
-                <Table
-                  stickyHeader
-                  aria-label="allcoupons-table"
-                  size="small"
-                >
+                <Table stickyHeader aria-label="allcoupons-table" size="small">
                   <TableHead>
                     <TableRow>
                       <TableCell>Code</TableCell>
@@ -94,12 +110,14 @@ const AllCoupons = () => {
                         page * rowsPerPage,
                         page * rowsPerPage + rowsPerPage
                       )
-                      .map(coupon => (
+                      .map((coupon) => (
                         <TableRow key={coupon.id} hover>
                           <TableCell>{coupon.code}</TableCell>
                           <TableCell>{coupon.discount_type}</TableCell>
                           <TableCell>{coupon.discount_value}</TableCell>
-                          <TableCell>{convertDateToStringFormat(coupon.expire)}</TableCell>
+                          <TableCell>
+                            {convertDateToStringFormat(coupon.expire)}
+                          </TableCell>
                           <TableCell>
                             <Tooltip
                               title="Edit Coupon"

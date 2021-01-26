@@ -16,6 +16,15 @@ import menuItems from "../routes/nav.json";
 import Icon from "@material-ui/core/Icon";
 import clsx from "clsx";
 
+menuItems.menu.forEach((route) => {
+  route.url = "/admin" + route.url;
+  if (route.children) {
+    route.children.forEach(
+      (childRoute) => (childRoute.url = "/admin" + childRoute.url)
+    );
+  }
+});
+
 const MenuBar = () => {
   const classes = useStyles();
   const [menuName, setMenuName] = useState("");

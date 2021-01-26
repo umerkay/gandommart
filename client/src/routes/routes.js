@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import { Route, Switch } from "react-router-dom";
 import Dashboard from "../views/dashboard";
 import { AllUsers, AddUser, EditUser } from "../views/users";
@@ -201,27 +201,29 @@ const Routes = [
     component: EditReview,
     name: "Edit Review",
   },
-   {
+  {
     path: "*",
     component: NotFound,
-    name: 'NotFound'
+    name: "NotFound",
   },
 ];
+
+Routes.forEach((route) => (route.path = "/admin" + route.path));
 
 const AllRoutes = () => {
   return (
     <Switch>
-         {Routes.map((route, index) => (
-          <Route
-            key={index}
-            exact={route.exact}
-            path={route.path}
-            name={route.name}
-            component={route.component}
-          />
-        ))}
+      {Routes.map((route, index) => (
+        <Route
+          key={index}
+          exact={route.exact}
+          path={route.path}
+          name={route.name}
+          component={route.component}
+        />
+      ))}
     </Switch>
-  )
-}
+  );
+};
 
 export default AllRoutes;

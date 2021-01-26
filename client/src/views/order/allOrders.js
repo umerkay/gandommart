@@ -13,7 +13,8 @@ import {
   TableContainer,
   TablePagination,
   IconButton,
-  Tooltip
+  Tooltip,
+  Button,
 } from "@material-ui/core";
 import { connect } from "react-redux";
 import { ordersAction, orderDeleteAction } from "../../store/action";
@@ -24,9 +25,10 @@ import Loading from "../utils/loading";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import viewStyles from "../viewStyles";
-import {convertDateToStringFormat} from "../utils/convertDate";
+import { convertDateToStringFormat } from "../utils/convertDate";
+import { CSVLink } from "react-csv";
 
-const AllOrders = props => {
+const AllOrders = (props) => {
   const classes = viewStyles();
 
   useEffect(() => {
@@ -42,7 +44,7 @@ const AllOrders = props => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = event => {
+  const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
@@ -55,7 +57,28 @@ const AllOrders = props => {
           <Card>
             {props.orders.loading && <Loading />}
 
-            <CardHeader title="All Orders" />
+            <CardHeader
+              action={
+                <span>
+                  <Button
+                    color="primary"
+                    className={classes.addUserBtn}
+                    size="small"
+                    variant="contained"
+                  >
+                    <CSVLink
+                      filename={
+                        "orders_" + new Date().toLocaleDateString() + ".csv"
+                      }
+                      data={props.orders.orders}
+                    >
+                      Download CSV
+                    </CSVLink>
+                  </Button>
+                </span>
+              }
+              title="All Orders"
+            />
             <Divider />
             <CardContent>
               <TableContainer className={classes.container}>
@@ -78,14 +101,16 @@ const AllOrders = props => {
                         page * rowsPerPage,
                         page * rowsPerPage + rowsPerPage
                       )
-                      .map(order => (
+                      .map((order) => (
                         <TableRow key={order.id} hover>
                           <TableCell>
                             {order.shipping.firstname +
                               " " +
                               order.shipping.lastname}
                           </TableCell>
-                          <TableCell>{convertDateToStringFormat(order.date)}</TableCell>
+                          <TableCell>
+                            {convertDateToStringFormat(order.date)}
+                          </TableCell>
                           <TableCell>
                             <span
                               className={"product-status-chip " + order.status}
@@ -136,13 +161,13 @@ const AllOrders = props => {
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return { orders: state.orders };
 };
 
 const mapDispatchToProps = {
   ordersAction,
-  orderDeleteAction
+  orderDeleteAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AllOrders);

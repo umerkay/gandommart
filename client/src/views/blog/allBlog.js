@@ -26,13 +26,13 @@ import PeopleIcon from "@material-ui/icons/People";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import viewStyles from "../viewStyles";
-import {convertDateToStringFormat} from "../utils/convertDate";
-import {Loading} from '../components';
+import { convertDateToStringFormat } from "../utils/convertDate";
+import { Loading } from "../components";
 
 const AllBlog = () => {
   const classes = viewStyles();
   const dispatch = useDispatch();
-  const blogs = useSelector(state => state.blogs);
+  const blogs = useSelector((state) => state.blogs);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -46,7 +46,7 @@ const AllBlog = () => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = event => {
+  const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
@@ -61,7 +61,7 @@ const AllBlog = () => {
 
             <CardHeader
               action={
-                <Link to="/add-blog">
+                <Link to="/admin/add-blog">
                   <Button
                     color="primary"
                     className={classes.addUserBtn}
@@ -77,11 +77,7 @@ const AllBlog = () => {
             <Divider />
             <CardContent>
               <TableContainer className={classes.container}>
-                <Table
-                  stickyHeader
-                  aria-label="blogs-table"
-                  size="small"
-                >
+                <Table stickyHeader aria-label="blogs-table" size="small">
                   <TableHead>
                     <TableRow>
                       <TableCell className={classes.avtarTd}>
@@ -99,7 +95,7 @@ const AllBlog = () => {
                         page * rowsPerPage,
                         page * rowsPerPage + rowsPerPage
                       )
-                      .map(blog => (
+                      .map((blog) => (
                         <TableRow key={blog.id} hover>
                           <TableCell>
                             <Avatar
@@ -112,7 +108,9 @@ const AllBlog = () => {
                           </TableCell>
                           <TableCell>{blog.title}</TableCell>
                           <TableCell>{blog.status}</TableCell>
-                          <TableCell>{convertDateToStringFormat(blog.date)}</TableCell>
+                          <TableCell>
+                            {convertDateToStringFormat(blog.date)}
+                          </TableCell>
                           <TableCell>
                             <IconButton
                               aria-label="Edit"
@@ -123,7 +121,9 @@ const AllBlog = () => {
                             <IconButton
                               aria-label="Delete"
                               className={classes.deleteicon}
-                              onClick={() => dispatch(blogDeleteAction(blog.id))}
+                              onClick={() =>
+                                dispatch(blogDeleteAction(blog.id))
+                              }
                             >
                               <DeleteIcon />
                             </IconButton>

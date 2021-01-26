@@ -15,7 +15,13 @@ import {
   reviewUpdateAction,
 } from "../../store/action";
 import { useSelector, useDispatch } from "react-redux";
-import { StyledRadio, Loading, TopBar, TextInput, CardBlocks } from "../components";
+import {
+  StyledRadio,
+  Loading,
+  TopBar,
+  TextInput,
+  CardBlocks,
+} from "../components";
 import viewStyles from "../viewStyles";
 
 var reviewObj = {
@@ -105,40 +111,40 @@ const EditReview = (props) => {
     <Fragment>
       {reviewState.loading && <Loading />}
       <TopBar
-        title='Edit Customer Review'
+        title="Edit Customer Review"
         onSubmit={updateReview}
-        submitTitle='Update'
-        backLink={"/reviews"}
+        submitTitle="Update"
+        backLink={"/admin/reviews"}
       />
 
       <Grid container spacing={4} className={classes.secondmainrow}>
         <Grid item lg={9} md={12} sm={12} xs={12}>
-          <CardBlocks title='Review Information' nomargin>
-            <Box component='div' mb={2}>
+          <CardBlocks title="Review Information" nomargin>
+            <Box component="div" mb={2}>
               <TextInput
                 value={review.title}
-                label='Title'
-                name='title'
+                label="Title"
+                name="title"
                 onInputChange={handleChange}
               />
             </Box>
-            <Box component='div' mb={2}>
+            <Box component="div" mb={2}>
               <TextInput
                 value={review.review}
-                name='review'
-                label='Review'
+                name="review"
+                label="Review"
                 onInputChange={handleChange}
               />
             </Box>
           </CardBlocks>
 
-          <CardBlocks title='Review Details'>
+          <CardBlocks title="Review Details">
             {review.product.value && (
-              <Box component='div' mb={2}>
-                <Typography component='legend'>Products</Typography>
+              <Box component="div" mb={2}>
+                <Typography component="legend">Products</Typography>
                 <Select
                   value={review.product}
-                  name='product_id'
+                  name="product_id"
                   onChange={(e) =>
                     setreview({
                       ...review,
@@ -152,11 +158,11 @@ const EditReview = (props) => {
             )}
 
             {review.customer.value && (
-              <Box component='div' mb={2}>
-                <Typography component='legend'>Customer</Typography>
+              <Box component="div" mb={2}>
+                <Typography component="legend">Customer</Typography>
                 <Select
                   value={review.customer}
-                  name='customer_id'
+                  name="customer_id"
                   onChange={(e) =>
                     setreview({
                       ...review,
@@ -170,19 +176,19 @@ const EditReview = (props) => {
               </Box>
             )}
 
-            <Box component='div' mb={2}>
+            <Box component="div" mb={2}>
               <TextInput
                 value={review.email}
-                label='Email'
-                name='email'
+                label="Email"
+                name="email"
                 onInputChange={handleChange}
               />
             </Box>
 
-            <Box component='fieldset' mb={3} borderColor='transparent'>
-              <Typography component='legend'>Rating</Typography>
+            <Box component="fieldset" mb={3} borderColor="transparent">
+              <Typography component="legend">Rating</Typography>
               <Rating
-                name='simple-controlled'
+                name="simple-controlled"
                 value={Number(review.rating)}
                 onChange={(event, newValue) => {
                   setreview({
@@ -196,23 +202,23 @@ const EditReview = (props) => {
         </Grid>
 
         <Grid item lg={3} md={12} xs={12}>
-          <CardBlocks title='Status' nomargin>
+          <CardBlocks title="Status" nomargin>
             <RadioGroup
-              defaultValue='Publish'
-              name='status'
+              defaultValue="Publish"
+              name="status"
               onChange={handleChange}
               row
               value={review.status}
             >
               <FormControlLabel
-                value='approved'
+                value="approved"
                 control={<StyledRadio />}
-                label='Approved'
+                label="Approved"
               />
               <FormControlLabel
-                value='pending'
+                value="pending"
                 control={<StyledRadio />}
-                label='Pending'
+                label="Pending"
               />
             </RadioGroup>
           </CardBlocks>

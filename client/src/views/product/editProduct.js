@@ -209,32 +209,32 @@ const EditProduct = (props) => {
       {productState.loading ? <Loading /> : null}
       <form>
         <TopBar
-          title='Edit product'
+          title="Edit product"
           onSubmit={updateProduct}
-          submitTitle='Update'
-          backLink={"/all-products"}
+          submitTitle="Update"
+          backLink={"/admin/all-products"}
         />
 
         {!isEmpty(product.id) ? (
           <Grid container spacing={4} className={classes.secondmainrow}>
             <Grid item lg={9} md={12}>
               {/* ===================Information=================== */}
-              <CardBlocks title='Product Information' nomargin>
+              <CardBlocks title="Product Information" nomargin>
                 {/* ===================Title=================== */}
-                <Box component='div' mb={2}>
+                <Box component="div" mb={2}>
                   <TextField
-                    label='Name'
-                    name='name'
+                    label="Name"
+                    name="name"
                     value={product.name}
                     onChange={handleChange}
                     onBlur={(e) => !product.url && isUrlExist(product.name)}
-                    variant='outlined'
+                    variant="outlined"
                     fullWidth
                   />
                 </Box>
 
                 {/* ===================Url=================== */}
-                <Box component='div' mb={2}>
+                <Box component="div" mb={2}>
                   <URLComponent
                     url={product.url}
                     onInputChange={(updatedUrl) => {
@@ -243,13 +243,13 @@ const EditProduct = (props) => {
                         url: updatedUrl,
                       });
                     }}
-                    pageUrl='product'
-                    tableUrl='Product'
+                    pageUrl="product"
+                    tableUrl="Product"
                   />
                 </Box>
 
                 {/* ===================Description=================== */}
-                <Box component='div'>
+                <Box component="div">
                   <TinymceEditor
                     value={product.description}
                     onEditorChange={(value) =>
@@ -260,7 +260,7 @@ const EditProduct = (props) => {
               </CardBlocks>
 
               {/* ===================Categories=================== */}
-              <CardBlocks title='Categories'>
+              <CardBlocks title="Categories">
                 <EditCategoriesComponent
                   selectedCategories={product.categoryId}
                   onCategoryChange={(items) => {
@@ -270,15 +270,15 @@ const EditProduct = (props) => {
               </CardBlocks>
 
               {/* ===================Pricing=================== */}
-              <CardBlocks title='Pricing'>
+              <CardBlocks title="Pricing">
                 <Grid container spacing={3}>
                   <Grid item md={4}>
                     <TextField
-                      label='Price'
-                      name='price'
-                      variant='outlined'
+                      label="Price"
+                      name="price"
+                      variant="outlined"
                       fullWidth
-                      type='number'
+                      type="number"
                       value={product.pricing.price}
                       onChange={(e) =>
                         setProduct({
@@ -293,11 +293,11 @@ const EditProduct = (props) => {
                   </Grid>
                   <Grid item md={4}>
                     <TextField
-                      label='Sale Price'
-                      name='sellprice'
-                      variant='outlined'
+                      label="Sale Price"
+                      name="sellprice"
+                      variant="outlined"
                       fullWidth
-                      type='number'
+                      type="number"
                       value={product.pricing.sellprice}
                       onChange={(e) =>
                         setProduct({
@@ -314,17 +314,17 @@ const EditProduct = (props) => {
               </CardBlocks>
 
               {/* ===================Product Type=================== */}
-              <CardBlocks title='Product Type'>
+              <CardBlocks title="Product Type">
                 <Grid container spacing={3}>
                   <Grid item md={12}>
                     <FormGroup row>
                       <FormControlLabel
                         control={
                           <Checkbox
-                            color='primary'
+                            color="primary"
                             checked={product.product_type.virtual}
-                            name='virtual'
-                            value='virtual'
+                            name="virtual"
+                            value="virtual"
                             onChange={(e) =>
                               setProduct({
                                 ...product,
@@ -336,15 +336,15 @@ const EditProduct = (props) => {
                             }
                           />
                         }
-                        label='Virtual'
+                        label="Virtual"
                       />
                       <FormControlLabel
                         control={
                           <Checkbox
-                            color='primary'
+                            color="primary"
                             checked={product.product_type.downloadable}
-                            name='downloadable'
-                            value='downloadable'
+                            name="downloadable"
+                            value="downloadable"
                             onChange={(e) =>
                               setProduct({
                                 ...product,
@@ -356,7 +356,7 @@ const EditProduct = (props) => {
                             }
                           />
                         }
-                        label='Downloadable'
+                        label="Downloadable"
                       />
                     </FormGroup>
                   </Grid>
@@ -365,7 +365,7 @@ const EditProduct = (props) => {
 
               {/* ===================Shipping=================== */}
               {!product.product_type.virtual && (
-                <CardBlocks title='Shipping'>
+                <CardBlocks title="Shipping">
                   <ShippingComponent
                     product={product}
                     onShippingInputChange={(name, value) => {
@@ -391,7 +391,7 @@ const EditProduct = (props) => {
               )}
 
               {/* ===================Tax=================== */}
-              <CardBlocks title='Tax'>
+              <CardBlocks title="Tax">
                 <TaxComponent
                   product={product}
                   onTaxInputChange={(name, value) => {
@@ -404,12 +404,12 @@ const EditProduct = (props) => {
               </CardBlocks>
 
               {/* ===================Inventory=================== */}
-              <CardBlocks title='Inventory'>
+              <CardBlocks title="Inventory">
                 <Grid container spacing={3}>
                   <Grid item md={4}>
                     <TextInput
-                      label='SKU'
-                      name='sku'
+                      label="SKU"
+                      name="sku"
                       onChange={handleChange}
                       value={product.sku}
                     />
@@ -417,11 +417,11 @@ const EditProduct = (props) => {
 
                   <Grid item md={4}>
                     <TextInput
-                      id='quantity'
-                      label='Quantity'
-                      name='quantity'
+                      id="quantity"
+                      label="Quantity"
+                      name="quantity"
                       onChange={handleChange}
-                      type='number'
+                      type="number"
                       value={product.quantity}
                     />
                   </Grid>
@@ -429,7 +429,7 @@ const EditProduct = (props) => {
               </CardBlocks>
 
               {/* ===================Attributes=================== */}
-              <CardBlocks title='Attribute selection'>
+              <CardBlocks title="Attribute selection">
                 <Attributes
                   EditMode
                   product={product}
@@ -445,40 +445,40 @@ const EditProduct = (props) => {
               </CardBlocks>
 
               {/* ===================Custom Fields=================== */}
-              <CardBlocks title='Custom Fields'>
+              <CardBlocks title="Custom Fields">
                 <Grid container spacing={2}>
                   <Grid item md={12} sm={12} xs={12}>
                     {product.custom_field.map((field, index) => (
                       <Box
                         key={index}
-                        display='flex'
-                        justifyContent='flex-start'
-                        alignItems='center'
+                        display="flex"
+                        justifyContent="flex-start"
+                        alignItems="center"
                         className={classes.customFieldRow}
                       >
                         <TextField
-                          label='Custom Field Name: *'
-                          variant='outlined'
-                          name='key'
+                          label="Custom Field Name: *"
+                          variant="outlined"
+                          name="key"
                           className={classes.customFieldInput}
                           value={field.key}
                           onChange={(e) => customChange(e, index)}
-                          size='small'
+                          size="small"
                         />
                         <TextField
-                          label='Custom Field Value: *'
-                          variant='outlined'
-                          name='value'
+                          label="Custom Field Value: *"
+                          variant="outlined"
+                          name="value"
                           className={classes.customFieldInput}
                           value={field.value}
                           onChange={(e) => customChange(e, index)}
-                          size='small'
+                          size="small"
                         />
-                        <Tooltip title='Remove Field' aria-label='remove-field'>
+                        <Tooltip title="Remove Field" aria-label="remove-field">
                           <IconButton
-                            aria-label='remove-field'
+                            aria-label="remove-field"
                             onClick={(e) => removeCustomField(index)}
-                            size='small'
+                            size="small"
                             className={classes.deleteicon}
                           >
                             <Icon>clear</Icon>
@@ -489,8 +489,8 @@ const EditProduct = (props) => {
                   </Grid>
                   <Grid item lg={4} md={12}>
                     <Button
-                      color='primary'
-                      variant='contained'
+                      color="primary"
+                      variant="contained"
                       onClick={addCustomField}
                     >
                       + Add Custom Fields
@@ -500,25 +500,25 @@ const EditProduct = (props) => {
               </CardBlocks>
 
               {/* ===================Short Description=================== */}
-              <CardBlocks title='Short Description'>
+              <CardBlocks title="Short Description">
                 <TextInput
                   value={product.short_description}
-                  label='Short Description'
-                  name='short_description'
+                  label="Short Description"
+                  name="short_description"
                   onInputChange={handleChange}
                   multiline
-                  rows='4'
+                  rows="4"
                 />
               </CardBlocks>
 
               {/* ===================Meta Information=================== */}
-              <CardBlocks title='Meta Information'>
+              <CardBlocks title="Meta Information">
                 <Grid container spacing={isSmall ? 1 : 2}>
                   <Grid item md={6} xs={12}>
                     <TextInput
                       value={product.meta.title}
-                      label='Meta Title'
-                      name='title'
+                      label="Meta Title"
+                      name="title"
                       onInputChange={onMetaChange}
                     />
                   </Grid>
@@ -526,8 +526,8 @@ const EditProduct = (props) => {
                   <Grid item md={6} xs={12}>
                     <TextInput
                       value={product.meta.keywords}
-                      label='Meta Keywords'
-                      name='keywords'
+                      label="Meta Keywords"
+                      name="keywords"
                       onInputChange={onMetaChange}
                     />
                   </Grid>
@@ -535,11 +535,11 @@ const EditProduct = (props) => {
                   <Grid item xs={12}>
                     <TextInput
                       value={product.meta.description}
-                      label='Meta Description'
-                      name='description'
+                      label="Meta Description"
+                      name="description"
                       onInputChange={onMetaChange}
                       multiline
-                      rows='4'
+                      rows="4"
                     />
                   </Grid>
                 </Grid>
@@ -548,36 +548,36 @@ const EditProduct = (props) => {
 
             <Grid item lg={3} md={12}>
               {/* ===================Status=================== */}
-              <Box component='span'>
-                <CardBlocks title='Status' nomargin>
+              <Box component="span">
+                <CardBlocks title="Status" nomargin>
                   <RadioGroup
-                    defaultValue='Draft'
-                    name='status'
+                    defaultValue="Draft"
+                    name="status"
                     onChange={handleChange}
                     row
                   >
                     <FormControlLabel
-                      value='Publish'
+                      value="Publish"
                       control={<StyledRadio />}
-                      label='Publish'
+                      label="Publish"
                     />
                     <FormControlLabel
-                      value='Draft'
+                      value="Draft"
                       control={<StyledRadio />}
-                      label='Draft'
+                      label="Draft"
                     />
                   </RadioGroup>
                 </CardBlocks>
               </Box>
 
               {/* ===================Featured Product=================== */}
-              <Box component='span' m={1}>
-                <CardBlocks title='Featured Product'>
+              <Box component="span" m={1}>
+                <CardBlocks title="Featured Product">
                   <FormGroup row>
                     <FormControlLabel
                       control={
                         <Checkbox
-                          color='primary'
+                          color="primary"
                           checked={product.featured_product}
                           onChange={(e) =>
                             setProduct({
@@ -587,15 +587,15 @@ const EditProduct = (props) => {
                           }
                         />
                       }
-                      label='Featured Product'
+                      label="Featured Product"
                     />
                   </FormGroup>
                 </CardBlocks>
               </Box>
 
               {/* ===================Featured Image=================== */}
-              <Box component='span' m={1}>
-                <CardBlocks title='Featured Image'>
+              <Box component="span" m={1}>
+                <CardBlocks title="Featured Image">
                   <FeaturedImageComponent
                     image={featureImage}
                     feautedImageChange={(e) => onFeatureImageChange(e)}
@@ -604,11 +604,11 @@ const EditProduct = (props) => {
               </Box>
 
               {/* ===================Gallery Images=================== */}
-              <Box component='span' m={1}>
-                <CardBlocks title='Gallery Image'>
+              <Box component="span" m={1}>
+                <CardBlocks title="Gallery Image">
                   <EditGalleryImageSelection
                     onAddGalleryImage={(e) => {
-                      console.log("e.target.files", e.target.files)
+                      console.log("e.target.files", e.target.files);
                       setProduct({
                         ...product,
                         [e.target.name]: e.target.files,
@@ -630,8 +630,8 @@ const EditProduct = (props) => {
               </Box>
 
               {/* ===================Brands=================== */}
-              <Box component='span' m={1}>
-                <CardBlocks title='Brands'>
+              <Box component="span" m={1}>
+                <CardBlocks title="Brands">
                   <BrandSelection
                     value={product.brand}
                     onBrandChange={(brand) => {

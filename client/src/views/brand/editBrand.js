@@ -62,10 +62,10 @@ const EditBrand = (props) => {
       {Brands.loading && <Loading />}
       <Alert />
       <TopBar
-        title='Edit Brands'
+        title="Edit Brands"
         onSubmit={updateBrand}
-        submitTitle='Update'
-        backLink={"/all-brands"}
+        submitTitle="Update"
+        backLink={"/admin/all-brands"}
       />
       <Grid
         container
@@ -73,21 +73,21 @@ const EditBrand = (props) => {
         className={classes.secondmainrow}
       >
         <Grid item md={6} sm={12} xs={12}>
-          <CardBlocks title='Brand Details' nomargin>
+          <CardBlocks title="Brand Details" nomargin>
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <TextInput
                   value={brand.name}
-                  label='Brand Name'
-                  name='name'
+                  label="Brand Name"
+                  name="name"
                   onInputChange={handleChange}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextInput
                   value={brand.url}
-                  label='Url'
-                  name='url'
+                  label="Url"
+                  name="url"
                   onInputChange={handleChange}
                 />
               </Grid>
@@ -95,16 +95,16 @@ const EditBrand = (props) => {
                 <Grid container>
                   <Grid item className={classes.flex1}>
                     <TextField
-                      helperText='Brand Logo'
-                      name='updated_brand_logo'
-                      variant='outlined'
+                      helperText="Brand Logo"
+                      name="updated_brand_logo"
+                      variant="outlined"
                       className={clsx(
                         classes.marginBottom,
                         classes.width100,
                         "top-helper"
                       )}
                       onChange={fileChange}
-                      type='file'
+                      type="file"
                     />
                   </Grid>
                   <Grid item>
@@ -113,7 +113,7 @@ const EditBrand = (props) => {
                         <img
                           src={logoImage}
                           className={classes.logoImagePreview}
-                          alt='Brand Logo'
+                          alt="Brand Logo"
                         />
                       </Box>
                     )}
@@ -125,13 +125,13 @@ const EditBrand = (props) => {
         </Grid>
 
         <Grid item md={6} sm={12} xs={12}>
-          <CardBlocks title='Meta Information' nomargin>
+          <CardBlocks title="Meta Information" nomargin>
             <Grid container spacing={3}>
               <Grid item md={6} xs={12}>
                 <TextInput
                   value={brand.meta.title}
-                  label='Meta Title'
-                  name='title'
+                  label="Meta Title"
+                  name="title"
                   onInputChange={metaChange}
                 />
               </Grid>
@@ -139,22 +139,22 @@ const EditBrand = (props) => {
               <Grid item md={6} xs={12}>
                 <TextInput
                   value={brand.meta.keywords}
-                  label='Meta Keyword'
-                  name='keywords'
+                  label="Meta Keyword"
+                  name="keywords"
                   onInputChange={metaChange}
                 />
               </Grid>
 
               <Grid item md={12} xs={12}>
                 <TextField
-                  label='Meta-description'
-                  name='description'
-                  variant='outlined'
+                  label="Meta-description"
+                  name="description"
+                  variant="outlined"
                   value={brand.meta.description}
                   className={clsx(classes.marginBottom, classes.width100)}
                   onChange={metaChange}
                   multiline
-                  rows='4'
+                  rows="4"
                 />
               </Grid>
             </Grid>

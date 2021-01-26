@@ -73,14 +73,14 @@ const EditUser = (props) => {
 
       <form>
         <TopBar
-          title='Edit Users'
+          title="Edit Users"
           onSubmit={updateUser}
-          submitTitle='Update'
-          backLink={"/all-users"}
+          submitTitle="Update"
+          backLink={"/admin/all-users"}
         />
         <Grid container spacing={3} className={classes.secondmainrow}>
           <Grid item xs={12}>
-            <CardBlocks title='User Information' nomargin>
+            <CardBlocks title="User Information" nomargin>
               <Grid container spacing={4}>
                 <Grid item xl={2} lg={3} md={4} xs={12}>
                   <FeaturedImageComponent
@@ -90,34 +90,34 @@ const EditUser = (props) => {
                   />
                 </Grid>
                 <Grid item md={6} xs={12}>
-                  <Box component='div' mb={2}>
+                  <Box component="div" mb={2}>
                     <TextInput
                       value={user.name}
-                      label='Name'
-                      name='name'
+                      label="Name"
+                      name="name"
                       onInputChange={handleChange}
                     />
                   </Box>
-                  <Box component='div' mb={2}>
+                  <Box component="div" mb={2}>
                     <TextInput
-                      type='email'
+                      type="email"
                       value={user.email}
-                      label='Email'
-                      name='email'
+                      label="Email"
+                      name="email"
                       onInputChange={handleChange}
                     />
                   </Box>
-                  <Box component='div' mb={2}>
+                  <Box component="div" mb={2}>
                     <PasswordInput
-                      name='password'
+                      name="password"
                       value={user.password}
-                      label='Password'
+                      label="Password"
                       onInputChange={handleChange}
                     />
                   </Box>
-                  <Box component='div'>
+                  <Box component="div">
                     <SelectComponent
-                      label='Role'
+                      label="Role"
                       onSelecteChange={(val) =>
                         setuser({ ...user, ["role"]: val })
                       }
@@ -128,7 +128,7 @@ const EditUser = (props) => {
                         "Author",
                         "User",
                       ]}
-                      name='role'
+                      name="role"
                       value={user.role}
                     />
                   </Box>

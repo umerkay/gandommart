@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import {
   Grid,
   Card,
@@ -27,14 +27,22 @@ import EditIcon from "@material-ui/icons/Edit";
 import viewStyles from "../viewStyles";
 import { convertDateToStringFormat } from "../utils/convertDate";
 import { Alert, Loading } from "../components";
+import { CSVLink } from "react-csv";
+import SearchBar from "../components/SearchBar.js";
 
 const AllProduct = () => {
   const classes = viewStyles();
   const dispatch = useDispatch();
   const products = useSelector((state) => state.products);
+
   useEffect(() => {
     dispatch(productsAction());
   }, []);
+
+  const [dataToShow, setDataToShow] = useState(products.products);
+  useEffect(() => {
+    setDataToShow(products.products);
+  }, [products]);
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -57,23 +65,50 @@ const AllProduct = () => {
             {products.loading ? <Loading /> : null}
             <CardHeader
               action={
-                <Link to='/add-product'>
-                  <Button
-                    color='primary'
-                    className={classes.addUserBtn}
-                    size='small'
-                    variant='contained'
-                  >
-                    Add Product
-                  </Button>
-                </Link>
+                <>
+                  <Link to="/admin/add-product">
+                    <Button
+                      color="primary"
+                      className={classes.addUserBtn}
+                      size="small"
+                      variant="contained"
+                    >
+                      Add Product
+                    </Button>
+                  </Link>
+
+                  <span>
+                    <Button
+                      color="primary"
+                      className={classes.addUserBtn}
+                      size="small"
+                      variant="contained"
+                    >
+                      <CSVLink
+                        filename={
+                          "products_" + new Date().toLocaleDateString() + ".csv"
+                        }
+                        data={products.products}
+                      >
+                        Download CSV
+                      </CSVLink>
+                    </Button>
+                  </span>
+                </>
               }
-              title='All Products'
+              title="All Products"
             />
             <Divider />
+            <div>
+              <SearchBar
+                data={products.products}
+                field={"name"}
+                onQuery={(data) => setDataToShow(data)}
+              ></SearchBar>
+            </div>
             <CardContent>
               <TableContainer>
-                <Table stickyHeader aria-label='all-products' size='small'>
+                <Table stickyHeader aria-label="all-products" size="small">
                   <TableHead>
                     <TableRow>
                       <TableCell className={classes.avtarTd}>
@@ -85,7 +120,7 @@ const AllProduct = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody className={classes.container}>
-                    {products.products
+                    {dataToShow
                       .slice(
                         page * rowsPerPage,
                         page * rowsPerPage + rowsPerPage
@@ -106,9 +141,9 @@ const AllProduct = () => {
                             {convertDateToStringFormat(product.date)}
                           </TableCell>
                           <TableCell>
-                            <Tooltip title='Edit Product' aria-label='edit'>
+                            <Tooltip title="Edit Product" aria-label="edit">
                               <IconButton
-                                aria-label='Edit'
+                                aria-label="Edit"
                                 onClick={() =>
                                   jumpTo(`edit-product/${product.id}`)
                                 }
@@ -116,9 +151,9 @@ const AllProduct = () => {
                                 <EditIcon />
                               </IconButton>
                             </Tooltip>
-                            <Tooltip title='Delete Product' aria-label='delete'>
+                            <Tooltip title="Delete Product" aria-label="delete">
                               <IconButton
-                                aria-label='Delete'
+                                aria-label="Delete"
                                 className={classes.deleteicon}
                                 onClick={() =>
                                   dispatch(productDeleteAction(product.id))
@@ -135,7 +170,7 @@ const AllProduct = () => {
               </TableContainer>
               <TablePagination
                 rowsPerPageOptions={[5, 10, 20]}
-                component='div'
+                component="div"
                 count={products.products.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
