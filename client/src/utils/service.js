@@ -99,7 +99,7 @@ export const login = (email, password) => {
   };
   return service({
     method: "POST",
-    url: "api/users/login",
+    url: "/api/users/login",
     data: body,
   }).then((res) => {
     Auth.setUserToken(res.data);
@@ -108,7 +108,7 @@ export const login = (email, password) => {
 };
 
 export const getUpdatedUrl = (table, url) => {
-  return service({ 
+  return service({
     method: "POST",
     url: "/api/misc/checkurl",
     data: { url: url, table: table },
@@ -146,7 +146,7 @@ export const deleteProductVariationImage = (obj) => {
 export const getDashboardData = () => {
   return service({
     method: "POST",
-    url: "/api/misc/dashboard_data"
+    url: "/api/misc/dashboard_data",
   }).then((res) => {
     if (res.data.success) {
       return Promise.resolve(res.data.dashBoardData);
