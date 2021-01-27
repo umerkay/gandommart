@@ -48,6 +48,7 @@ const AllOrders = (props) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+  // console.log(props.orders.orders);
 
   return (
     <Fragment>
@@ -92,6 +93,7 @@ const AllOrders = (props) => {
                       <TableCell>Name</TableCell>
                       <TableCell>Date</TableCell>
                       <TableCell>Status</TableCell>
+                      <TableCell>Category</TableCell>
                       <TableCell>Actions</TableCell>
                     </TableRow>
                   </TableHead>
@@ -118,6 +120,11 @@ const AllOrders = (props) => {
                               {order.status}
                             </span>
                           </TableCell>
+                          {/* <TableCell>
+                            {order.categoryId
+                              .map((cat) => cat.name)
+                              .join(", ")}
+                          </TableCell> */}
                           <TableCell>
                             <Tooltip title="Edit Order" aria-label="edit">
                               <IconButton

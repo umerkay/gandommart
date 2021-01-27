@@ -34,12 +34,16 @@ const AllProduct = () => {
   const classes = viewStyles();
   const dispatch = useDispatch();
   const products = useSelector((state) => state.products);
+  let extraData = [];
 
   useEffect(() => {
     dispatch(productsAction());
   }, []);
 
   const [dataToShow, setDataToShow] = useState(products.products);
+  dataToShow.forEach((product) =>
+    extraData.push(product.categoryId.map((cat) => cat.name).join(", "))
+  );
   useEffect(() => {
     setDataToShow(products.products);
   }, [products]);
@@ -55,6 +59,7 @@ const AllProduct = () => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+  console.log(dataToShow);
 
   return (
     <Fragment>
@@ -103,6 +108,7 @@ const AllProduct = () => {
               <SearchBar
                 data={products.products}
                 field={"name"}
+                fields={["name", "quantity", "sku"]}
                 onQuery={(data) => setDataToShow(data)}
               ></SearchBar>
             </div>
@@ -116,6 +122,7 @@ const AllProduct = () => {
                       </TableCell>
                       <TableCell>Name</TableCell>
                       <TableCell>Date</TableCell>
+                      <TableCell>Category</TableCell>
                       <TableCell>Actions</TableCell>
                     </TableRow>
                   </TableHead>
@@ -125,7 +132,7 @@ const AllProduct = () => {
                         page * rowsPerPage,
                         page * rowsPerPage + rowsPerPage
                       )
-                      .map((product) => (
+                      .map((product, i) => (
                         <TableRow key={product.id} hover>
                           <TableCell>
                             <Avatar
@@ -139,6 +146,10 @@ const AllProduct = () => {
                           <TableCell>{product.name}</TableCell>
                           <TableCell>
                             {convertDateToStringFormat(product.date)}
+                          </TableCell>
+                          <TableCell>
+                            {extraData[i]}
+                            {console.log(extraData)}
                           </TableCell>
                           <TableCell>
                             <Tooltip title="Edit Product" aria-label="edit">
@@ -169,7 +180,7 @@ const AllProduct = () => {
                 </Table>
               </TableContainer>
               <TablePagination
-                rowsPerPageOptions={[5, 10, 20]}
+                rowsPerPageOptions={[5, 10, 20, 50, 100, 200]}
                 component="div"
                 count={products.products.length}
                 rowsPerPage={rowsPerPage}

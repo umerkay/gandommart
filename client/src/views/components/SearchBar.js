@@ -1,18 +1,24 @@
 import React, { useState, useEffect } from "react";
 
-export default function SearchBar({ data, field, onQuery }) {
+export default function SearchBar({ data, field, fields, onQuery }) {
   const [text, setText] = useState("");
+  const [searchField, setField] = useState(field || fields[0]);
   useEffect(() => {
     if (text === "") return onQuery(data);
     let queried = data.filter((datum) => {
-      console.log(datum[field], text, datum[field].search(text));
+      console.log(datum[searchField], text, datum[searchField]?.search(text));
 
-      return datum[field].toLowerCase().search(text.toLowerCase()) != -1;
+      return datum[searchField]?.toLowerCase().search(text.toLowerCase()) != -1;
     });
     onQuery(queried);
   }, [text]);
   return (
     <div>
+      <select onInput={(e) => setField(e.target.value)}>
+        {fields?.map((_field) => (
+          <option value={_field}>{_field}</option>
+        ))}
+      </select>
       <input
         style={{
           width: "100%",
