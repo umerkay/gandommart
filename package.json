@@ -17,6 +17,10 @@
   },
   "author": "Husain Bandookwala",
   "license": "MIT",
+  "resolutions": {
+    "**/**/fs-capacitor": "^6.2.0",
+    "**/graphql-upload": "^11.0.0"
+  },
   "dependencies": {
     "@babel/preset-env": "^7.12.11",
     "@babel/preset-react": "^7.12.10",
@@ -40,6 +44,7 @@
     "fast-csv": "^4.3.6",
     "formidable": "^1.2.2",
     "fs": "0.0.1-security",
+    "fs-capacitor": "^6.2.0",
     "graphql": "^14.7.0",
     "graphql-iso-date": "^3.6.1",
     "graphql-tag": "^2.11.0",

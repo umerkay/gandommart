@@ -50,11 +50,13 @@ const GalleryImagesComponents = (props) => {
             ))}
           </Slider>
         ) : (
-          <img
-            src={PlaceHolder}
-            alt="Placeholder"
-            className="single-placholder-image"
-          />
+          <>
+            <img
+              src={PlaceHolder}
+              alt="Placeholder"
+              className="single-placholder-image"
+            />
+          </>
         )}
       </div>
     </Fragment>

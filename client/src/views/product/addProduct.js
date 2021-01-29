@@ -13,6 +13,7 @@ import {
   Icon,
   useMediaQuery,
 } from "@material-ui/core";
+import { CSVReader } from "react-papaparse";
 import { useTheme } from "@material-ui/styles";
 import { useDispatch, useSelector } from "react-redux";
 import { productAddAction } from "../../store/action/";
@@ -46,6 +47,45 @@ const AddProduct = () => {
   const products = useSelector((state) => state.products);
   const [featureImage, setfeatureImage] = useState(null);
   const [combination, setCombination] = useState([]);
+
+  const [productsToAdd, setProductsToAdd] = useState([]);
+
+  const onFileDrop = (data) => {
+    console.log(data);
+    const _productsToAdd = data.map((datum, i) => {
+      const [sku, name, upc, url, price, imgSM, imgMD, imgLG] = datum.data;
+      return {
+        ...product,
+        sku,
+        name,
+        price,
+        feature_image: {
+          large: imgLG,
+          medium: imgMD,
+          original: imgLG,
+          thumbnail: imgSM,
+        },
+      };
+    });
+    _productsToAdd.shift();
+    setProductsToAdd(_productsToAdd);
+    console.log(_productsToAdd);
+  };
+
+  const addAllProducts = () => {
+    console.log(product);
+    productsToAdd.forEach((_product) => {
+      _product.categoryId = [...product.categoryId];
+      _product.combinations = combination;
+      _product.brand = product.brand;
+      _product.quantity = product.quantity;
+      _product.shipping.shipping_class = product.shipping.shipping_class;
+      _product.tax_class = product.tax_class;
+      console.log(_product);
+      dispatch(productAddAction(_product));
+    });
+  };
+
   const [product, setProduct] = useState({
     name: "",
     categoryId: [],
@@ -161,6 +201,14 @@ const AddProduct = () => {
 
         <Grid container spacing={4} className={classes.secondmainrow}>
           <Grid item lg={9} md={12}>
+            <div style={{ height: "150px" }}>
+              <CSVReader onDrop={onFileDrop}>
+                <span>Click to upload CSV of multiple products</span>
+              </CSVReader>
+            </div>
+            <div>
+              <Button onClick={addAllProducts}>Add All Products</Button>
+            </div>
             {/* ===================Information=================== */}
             <CardBlocks title="Product Information" nomargin>
               {/* ===================Title=================== */}

@@ -34,16 +34,15 @@ const AllProduct = () => {
   const classes = viewStyles();
   const dispatch = useDispatch();
   const products = useSelector((state) => state.products);
-  let extraData = [];
 
   useEffect(() => {
     dispatch(productsAction());
   }, []);
 
   const [dataToShow, setDataToShow] = useState(products.products);
-  dataToShow.forEach((product) =>
-    extraData.push(product.categoryId.map((cat) => cat.name).join(", "))
-  );
+  dataToShow.forEach((product) => {
+    product.category = product.categoryId.map((cat) => cat.name).join(", ");
+  });
   useEffect(() => {
     setDataToShow(products.products);
   }, [products]);
@@ -81,7 +80,42 @@ const AllProduct = () => {
                       Add Product
                     </Button>
                   </Link>
+                  <Tooltip title="Delete All Products" aria-label="delete">
+                    <IconButton
+                      aria-label="Delete"
+                      className={classes.deleteicon}
+                      onClick={() => {
+                        if (
+                          window.confirm(
+                            "Are you sure you want to delete all products from database?"
+                          )
+                        )
+                          products.products.forEach((product) =>
+                            dispatch(productDeleteAction(product.id))
+                          );
+                      }}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </Tooltip>
 
+                  <span>
+                    <Button
+                      color="primary"
+                      className={classes.addUserBtn}
+                      size="small"
+                      variant="contained"
+                    >
+                      <CSVLink
+                        filename={
+                          "products_" + new Date().toLocaleDateString() + ".csv"
+                        }
+                        data={dataToShow}
+                      >
+                        Download CSV Queried Data
+                      </CSVLink>
+                    </Button>
+                  </span>
                   <span>
                     <Button
                       color="primary"
@@ -95,7 +129,7 @@ const AllProduct = () => {
                         }
                         data={products.products}
                       >
-                        Download CSV
+                        Download CSV All Data
                       </CSVLink>
                     </Button>
                   </span>
@@ -107,8 +141,8 @@ const AllProduct = () => {
             <div>
               <SearchBar
                 data={products.products}
-                field={"name"}
-                fields={["name", "quantity", "sku"]}
+                // field={"name"}
+                fields={["name", "quantity", "sku", "category"]}
                 onQuery={(data) => setDataToShow(data)}
               ></SearchBar>
             </div>
@@ -147,10 +181,7 @@ const AllProduct = () => {
                           <TableCell>
                             {convertDateToStringFormat(product.date)}
                           </TableCell>
-                          <TableCell>
-                            {extraData[i]}
-                            {console.log(extraData)}
-                          </TableCell>
+                          <TableCell>{product.category}</TableCell>
                           <TableCell>
                             <Tooltip title="Edit Product" aria-label="edit">
                               <IconButton

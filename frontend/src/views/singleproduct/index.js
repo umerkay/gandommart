@@ -5,7 +5,7 @@ import {
   productsAction,
   productAction,
   productReviewsAction,
-  singleProductAction
+  singleProductAction,
 } from "../../store/action/productAction";
 import { isEmpty } from "../../utils/helper";
 import ProductDetail from "./productdetails";
@@ -20,7 +20,7 @@ const SingleProduct = (props) => {
   useEffect(() => {
     //props.productAction(props.match.params.id);
     //props.productReviewsAction(props.match.params.id);
-    props.singleProductAction(props.match.params.url)
+    props.singleProductAction(props.match.params.url);
   }, [props.match.params.url]);
 
   useEffect(() => {
@@ -41,8 +41,9 @@ const SingleProduct = (props) => {
         allimages.push(img);
       });
     }
+    console.log(product);
 
-    if(product.id){
+    if (product.id) {
       props.productReviewsAction(product.id);
     }
     setSliderImages(allimages);
@@ -108,7 +109,7 @@ const mapDispatchToProps = {
   productAction,
   productsAction,
   productReviewsAction,
-  singleProductAction
+  singleProductAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleProduct);

@@ -214,10 +214,11 @@ module.exports = {
             });
           }
         }
-        
-        const products = (await Product.aggregate(filterArrey)).map((pro)=> {pro.id = pro._id; return pro});        
 
-        
+        const products = (await Product.aggregate(filterArrey)).map((pro) => {
+          pro.id = pro._id;
+          return pro;
+        });
 
         return products || [];
       } catch (error) {
@@ -275,35 +276,37 @@ module.exports = {
     },
     attribute_master: async (root, args) => {
       try {
-
-        if(!root.attribute && !root.attribute.length){
+        if (!root.attribute && !root.attribute.length) {
           return [];
-        } 
+        }
         let attributes = {};
-        for(let attr of root.attribute){
-          if(!Array.isArray(attributes[attr.attribute_id.toString()])){
+        for (let attr of root.attribute) {
+          if (!Array.isArray(attributes[attr.attribute_id.toString()])) {
             attributes[attr.attribute_id.toString()] = [];
           }
-         
-          attributes[attr.attribute_id.toString()].push(attr.attribute_value_id.toString());
+
+          attributes[attr.attribute_id.toString()].push(
+            attr.attribute_value_id.toString()
+          );
         }
 
-        const attrMaster = await ProductAttribute.find({ _id: {$in: Object.keys(attributes)}});                      
+        const attrMaster = await ProductAttribute.find({
+          _id: { $in: Object.keys(attributes) },
+        });
 
         for (const [i, attr] of attrMaster.entries()) {
           for (const [j, val] of attr.values.entries()) {
             if (~attributes[attr._id.toString()].indexOf(val._id.toString())) {
-              
-              if(!Array.isArray(attrMaster[i].attribute_values)){
-                attrMaster[i].attribute_values = [];                  
+              if (!Array.isArray(attrMaster[i].attribute_values)) {
+                attrMaster[i].attribute_values = [];
               }
               attrMaster[i].attribute_values.push(val);
-            }            
+            }
           }
 
           attrMaster[i].values = [];
         }
-        
+
         return attrMaster || [];
       } catch (error) {
         error = checkError(error);
@@ -524,32 +527,32 @@ module.exports = {
           throw putError("Name already exist.");
         } else {
           //const isSku = await Product.findOne({ sku: args.sku });
-          let imgObject = "";
-          if (args.feature_image) {
-            imgObject = await imageUpload(
-              args.feature_image[0],
-              "/assets/images/product/feature/"
-            );
+          // let imgObject = "";
+          // if (args.feature_image) {
+          //   imgObject = await imageUpload(
+          //     args.feature_image[0],
+          //     "/assets/images/product/feature/"
+          //   );
 
-            if (imgObject.success === false) {
-              throw putError(imgObject.message);
-            }
-          }
+          //   if (imgObject.success === false) {
+          //     throw putError(imgObject.message);
+          //   }
+          // }
 
-          let imgArray = [];
-          if (args.gallery_image) {
-            let galleryObject = "";
-            for (let i in args.gallery_image) {
-              galleryObject = await imageUpload(
-                args.gallery_image[i],
-                "/assets/images/product/gallery/"
-              );
+          // let imgArray = [];
+          // if (args.gallery_image) {
+          //   let galleryObject = "";
+          //   for (let i in args.gallery_image) {
+          //     galleryObject = await imageUpload(
+          //       args.gallery_image[i],
+          //       "/assets/images/product/gallery/"
+          //     );
 
-              if (galleryObject.success) {
-                imgArray.push(galleryObject.data);
-              }
-            }
-          }
+          //     if (galleryObject.success) {
+          //       imgArray.push(galleryObject.data);
+          //     }
+          //   }
+          // }
 
           let url = await updateUrl(args.url || args.name, "Product");
 
@@ -566,8 +569,18 @@ module.exports = {
               price: args.pricing.price || 0,
               sellprice: args.pricing.sellprice || 0,
             },
-            feature_image: imgObject.data || imgObject,
-            gallery_image: imgArray,
+            feature_image: {
+              large:
+                "/assets/images/product/feature/large/" + args.sku + ".jpg",
+              medium:
+                "/assets/images/product/feature/medium/" + args.sku + ".jpg",
+              original:
+                "/assets/images/product/feature/original/" + args.sku + ".jpg",
+              thumbnail:
+                "/assets/images/product/feature/thumbnail/" + args.sku + ".jpg",
+            },
+            // feature_image: imgObject.data || imgObject,
+            gallery_image: [],
             status: args.status,
             meta: args.meta,
             shipping: {
@@ -721,7 +734,10 @@ module.exports = {
               combination.product_id = args.id;
 
               let imgObject = "";
-              if (combination.image && combination.image.hasOwnProperty("file")) {
+              if (
+                combination.image &&
+                combination.image.hasOwnProperty("file")
+              ) {
                 imgObject = await imageUpload(
                   combination.image.file[0],
                   "/assets/images/product/variant/"
@@ -755,7 +771,7 @@ module.exports = {
         }
       } catch (error) {
         error = checkError(error);
-        console.log("error", error)
+        console.log("error", error);
         throw new Error(error.custom_message);
       }
     },

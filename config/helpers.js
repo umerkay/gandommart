@@ -245,6 +245,7 @@ const imageUpload = async (upload, uploadPath) => {
           });
         });
     } catch (error) {
+      console.log(error);
       return resolve({
         success: false,
         message: "This image can't be upload 3",
