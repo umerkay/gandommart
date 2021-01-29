@@ -12,7 +12,7 @@
 
 # production
 /build
-/assets
+/assets/images/product/feature/_ignore
 /client-old
 
 # misc
