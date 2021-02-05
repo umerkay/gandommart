@@ -6,6 +6,7 @@ import Slider from "react-slick";
 
 const Banner = (props) => {
   const [bannerSlider, setBannerSlider] = useState([]);
+  console.log(bannerSlider);
 
   useEffect(() => {
     setBannerSlider(props.sliders);

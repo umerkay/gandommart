@@ -159,6 +159,11 @@ const Home = (props) => {
       {homepageSetting.appearance.home.add_section_in_home.feature_product &&
       featuredProducts.length > 0 ? (
         <Fragment>
+          <img
+            src="https://mainlymiles.com/wp-content/uploads/2018/08/groceries-background-e1533097069889.jpg"
+            width="100%"
+            alt="Feature Product Graphics"
+          />
           {featuredProducts.length > 5 ? (
             <ProductSlider
               allProducts={featuredProducts}
@@ -170,10 +175,6 @@ const Home = (props) => {
               title="Featured Products"
             />
           )}
-          <img
-            src="https://www.hbwebsol.com/wp-content/uploads/2020/06/section.jpg"
-            alt="Feature Product Graphics"
-          />
         </Fragment>
       ) : (
         ""
@@ -199,7 +200,7 @@ const Home = (props) => {
             onSale={true}
           />
           <img
-            src="https://www.hbwebsol.com/wp-content/uploads/2020/07/section2.jpg"
+            src="https://media.istockphoto.com/photos/red-sale-label-on-product-shelf-in-supermarket-with-blurred-male-picture-id1031295928?k=6&m=1031295928&s=612x612&w=0&h=Fv_x-fPp0lnaSwawhGzDzcDnZpdx489Xb0fRbtNetUc="
             alt="On Sale Product Graphics"
           />
         </Fragment>
@@ -212,6 +213,12 @@ const Home = (props) => {
       {homepageSetting.appearance.home.add_section_in_home
         .recently_added_products && recentProducts.length > 0 ? (
         <Fragment>
+          <img
+            src="https://thumbs.dreamstime.com/b/new-arrival-banner-design-white-background-vector-illustration-new-arrival-banner-design-160620909.jpg"
+            alt="New Product Graphics"
+            style={{margin: "0px 25%"}}
+            width="50%"
+          />
           {recentProducts.length > 5 ? (
             <ProductSlider
               allProducts={recentProducts}
@@ -219,8 +226,8 @@ const Home = (props) => {
             />
           ) : (
             <ProductGrid
-              allProducts={featuredProducts}
-              title="Featured Products"
+              allProducts={recentProducts}
+              title="Recently Added Products"
             />
           )}
         </Fragment>
