@@ -34,6 +34,7 @@ const AllProduct = () => {
   const classes = viewStyles();
   const dispatch = useDispatch();
   const products = useSelector((state) => state.products);
+  const [selected, setSelected] = useState([]);
 
   useEffect(() => {
     dispatch(productsAction());
@@ -42,13 +43,14 @@ const AllProduct = () => {
   const [dataToShow, setDataToShow] = useState(products.products);
   dataToShow.forEach((product) => {
     product.category = product.categoryId.map((cat) => cat.name).join(", ");
+    product["brand name"] = product.brand.name;
   });
   useEffect(() => {
     setDataToShow(products.products);
   }, [products]);
 
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(100);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -80,18 +82,18 @@ const AllProduct = () => {
                       Add Product
                     </Button>
                   </Link>
-                  <Tooltip title="Delete All Products" aria-label="delete">
+                  <Tooltip title="Delete Selected Entries" aria-label="delete">
                     <IconButton
                       aria-label="Delete"
                       className={classes.deleteicon}
                       onClick={() => {
                         if (
                           window.confirm(
-                            "Are you sure you want to delete all products from database?"
+                            "Are you sure you want to delete selected items from database?"
                           )
                         )
-                          products.products.forEach((product) =>
-                            dispatch(productDeleteAction(product.id))
+                          selected.forEach((datum) =>
+                            dispatch(productDeleteAction(datum.id))
                           );
                       }}
                     >
@@ -105,14 +107,16 @@ const AllProduct = () => {
                       className={classes.addUserBtn}
                       size="small"
                       variant="contained"
+                      disabled={!selected.length}
+                      style={{ marginRight: "1rem" }}
                     >
                       <CSVLink
                         filename={
                           "products_" + new Date().toLocaleDateString() + ".csv"
                         }
-                        data={dataToShow}
+                        data={selected}
                       >
-                        Download CSV Queried Data
+                        Generate Selected Data CSV
                       </CSVLink>
                     </Button>
                   </span>
@@ -142,7 +146,7 @@ const AllProduct = () => {
               <SearchBar
                 data={products.products}
                 // field={"name"}
-                fields={["name", "quantity", "sku", "category"]}
+                fields={["name", "brand name", "category"]}
                 onQuery={(data) => setDataToShow(data)}
               ></SearchBar>
             </div>
@@ -151,12 +155,25 @@ const AllProduct = () => {
                 <Table stickyHeader aria-label="all-products" size="small">
                   <TableHead>
                     <TableRow>
+                      <TableCell>
+                        <input
+                          type="checkbox"
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setSelected([...dataToShow]);
+                            } else {
+                              setSelected([]);
+                            }
+                          }}
+                        ></input>
+                      </TableCell>
                       <TableCell className={classes.avtarTd}>
                         <ImageIcon />
                       </TableCell>
                       <TableCell>Name</TableCell>
                       <TableCell>Date</TableCell>
                       <TableCell>Category</TableCell>
+                      <TableCell>Brand</TableCell>
                       <TableCell>Actions</TableCell>
                     </TableRow>
                   </TableHead>
@@ -168,6 +185,24 @@ const AllProduct = () => {
                       )
                       .map((product, i) => (
                         <TableRow key={product.id} hover>
+                          <TableCell>
+                            <input
+                              type="checkbox"
+                              checked={selected.includes(product)}
+                              onChange={(e) => {
+                                if (
+                                  e.target.checked &&
+                                  !selected.includes(product)
+                                ) {
+                                  setSelected([...selected, product]);
+                                } else if (selected.includes(product)) {
+                                  setSelected(
+                                    selected.filter((s) => s != product)
+                                  );
+                                }
+                              }}
+                            ></input>
+                          </TableCell>
                           <TableCell>
                             <Avatar
                               alt={product.name}
@@ -182,6 +217,7 @@ const AllProduct = () => {
                             {convertDateToStringFormat(product.date)}
                           </TableCell>
                           <TableCell>{product.category}</TableCell>
+                          <TableCell>{product.brand.name}</TableCell>
                           <TableCell>
                             <Tooltip title="Edit Product" aria-label="edit">
                               <IconButton
@@ -198,7 +234,12 @@ const AllProduct = () => {
                                 aria-label="Delete"
                                 className={classes.deleteicon}
                                 onClick={() =>
-                                  dispatch(productDeleteAction(product.id))
+                                  window.confirm(
+                                    "Are you sure you want to delete this product? " +
+                                      product.name
+                                  )
+                                    ? dispatch(productDeleteAction(product.id))
+                                    : null
                                 }
                               >
                                 <DeleteIcon />

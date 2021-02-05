@@ -19,6 +19,7 @@
     "react": "^16.14.0",
     "react-cookies": "^0.1.1",
     "react-csv": "^2.0.3",
+    "react-date-picker": "^8.0.7",
     "react-dom": "^16.14.0",
     "react-helmet": "^6.0.0",
     "react-hook-form": "^5.7.2",

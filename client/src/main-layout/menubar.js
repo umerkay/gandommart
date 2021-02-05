@@ -87,7 +87,6 @@ const MenuBar = () => {
       );
     });
   };
-
   return <List component="nav">{menuListing(menuItems.menu)}</List>;
 };
 

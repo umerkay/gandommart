@@ -14,6 +14,8 @@ import {
   Tooltip,
   Box,
   TablePagination,
+  Button,
+  CardHeader,
 } from "@material-ui/core";
 import clsx from "clsx";
 import { useDispatch, useSelector } from "react-redux";
@@ -35,8 +37,10 @@ import {
   URLComponent,
   TextInput,
   CardBlocks,
-  CardBlocksWithAction
+  CardBlocksWithAction,
 } from "../../components";
+import { CSVLink } from "react-csv";
+import SearchBar from "../../components/SearchBar.js";
 
 var categoryObject = {
   name: "",
@@ -59,6 +63,12 @@ const AllCategory = (props) => {
   const [featuredImage, setfeaturedImage] = useState(null);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+  const [selected, setSelected] = useState([]);
+  const [dataToShow, setDataToShow] = useState(products.categories);
+  useEffect(() => {
+    setDataToShow(products.categories);
+  }, [products]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -137,15 +147,100 @@ const AllCategory = (props) => {
       {products.loading ? <Loading /> : null}
       <Grid container className={classes.mainrow} spacing={2}>
         <Grid item md={6} xs={12}>
-          <CardBlocks title='All Categories' nomargin>
+          <CardBlocks title="All Categories" nomargin>
+            <CardHeader
+              action={
+                <>
+                  <Tooltip title="Delete Selected Entries" aria-label="delete">
+                    <IconButton
+                      aria-label="Delete"
+                      className={classes.deleteicon}
+                      onClick={() => {
+                        if (
+                          window.confirm(
+                            "Are you sure you want to delete selected items from database?"
+                          )
+                        )
+                          selected.forEach((datum) =>
+                            dispatch(categoryDeleteAction(datum.id))
+                          );
+                      }}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </Tooltip>
+
+                  <span>
+                    <Button
+                      color="primary"
+                      className={classes.addUserBtn}
+                      size="small"
+                      variant="contained"
+                      disabled={!selected.length}
+                      style={{ marginRight: "1rem" }}
+                    >
+                      <CSVLink
+                        filename={
+                          "categories_" +
+                          new Date().toLocaleDateString() +
+                          ".csv"
+                        }
+                        data={selected}
+                      >
+                        Selected CSV
+                      </CSVLink>
+                    </Button>
+                  </span>
+                  <span>
+                    <Button
+                      color="primary"
+                      className={classes.addUserBtn}
+                      size="small"
+                      variant="contained"
+                    >
+                      <CSVLink
+                        filename={
+                          "orders_" + new Date().toLocaleDateString() + ".csv"
+                        }
+                        data={products.categories}
+                      >
+                        CSV All Data
+                      </CSVLink>
+                    </Button>
+                  </span>
+                </>
+              }
+              title="All Categories"
+            />
+
+            <div>
+              <SearchBar
+                data={products.categories}
+                // field={"name"}
+                fields={["name"]}
+                onQuery={(data) => setDataToShow(data)}
+              ></SearchBar>
+            </div>
             <TableContainer className={classes.container}>
               <Table
                 stickyHeader
-                aria-label='All-Categories-Table'
-                size='small'
+                aria-label="All-Categories-Table"
+                size="small"
               >
                 <TableHead>
                   <TableRow>
+                    <TableCell>
+                      <input
+                        type="checkbox"
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setSelected([...dataToShow]);
+                          } else {
+                            setSelected([]);
+                          }
+                        }}
+                      ></input>
+                    </TableCell>
                     <TableCell>Name</TableCell>
                     <TableCell>Date</TableCell>
                     <TableCell>Actions</TableCell>
@@ -153,32 +248,48 @@ const AllCategory = (props) => {
                 </TableHead>
                 <TableBody>
                   {categories &&
-                    categories
+                    dataToShow
                       .slice(
                         page * rowsPerPage,
                         page * rowsPerPage + rowsPerPage
                       )
                       .map((cat) => (
                         <TableRow key={cat.id} hover>
+                          <TableCell>
+                            <input
+                              type="checkbox"
+                              checked={selected.includes(cat)}
+                              onChange={(e) => {
+                                if (
+                                  e.target.checked &&
+                                  !selected.includes(cat)
+                                ) {
+                                  setSelected([...selected, cat]);
+                                } else if (selected.includes(cat)) {
+                                  setSelected(selected.filter((s) => s != cat));
+                                }
+                              }}
+                            ></input>
+                          </TableCell>
                           <TableCell>{cat.name}</TableCell>
                           <TableCell>
                             {convertDateToStringFormat(cat.date)}
                           </TableCell>
                           <TableCell>
-                            <Tooltip title='Edit Category' aria-label='edit'>
+                            <Tooltip title="Edit Category" aria-label="edit">
                               <IconButton
-                                aria-label='Edit'
+                                aria-label="Edit"
                                 onClick={() => editCategory(cat)}
                               >
                                 <EditIcon />
                               </IconButton>
                             </Tooltip>
                             <Tooltip
-                              title='Delete Category'
-                              aria-label='delete'
+                              title="Delete Category"
+                              aria-label="delete"
                             >
                               <IconButton
-                                aria-label='Delete'
+                                aria-label="Delete"
                                 className={classes.deleteicon}
                                 onClick={() =>
                                   dispatch(categoryDeleteAction(cat.id))
@@ -195,7 +306,7 @@ const AllCategory = (props) => {
             </TableContainer>
             <TablePagination
               rowsPerPageOptions={[5, 10, 20]}
-              component='div'
+              component="div"
               count={categories.length}
               rowsPerPage={rowsPerPage}
               page={page}
@@ -215,9 +326,9 @@ const AllCategory = (props) => {
               nomargin
             >
               <TextField
-                label='Name'
-                name='name'
-                variant='outlined'
+                label="Name"
+                name="name"
+                variant="outlined"
                 className={clsx(classes.marginBottom, classes.width100)}
                 onChange={handleChange}
                 value={singlecategory.name}
@@ -226,7 +337,7 @@ const AllCategory = (props) => {
                 }
               />
 
-              <Box component='div' mb={singlecategory.url ? 2 : 0}>
+              <Box component="div" mb={singlecategory.url ? 2 : 0}>
                 <URLComponent
                   url={singlecategory.url}
                   onInputChange={(updatedUrl) => {
@@ -237,8 +348,8 @@ const AllCategory = (props) => {
                 />
               </Box>
 
-              <Box component='div' mb={2}>
-                <FormControl variant='outlined' fullWidth>
+              <Box component="div" mb={2}>
+                <FormControl variant="outlined" fullWidth>
                   <span className={classes.selectCatLabel}>Parent</span>
                   <Select
                     native
@@ -252,7 +363,7 @@ const AllCategory = (props) => {
                       name: "parentId",
                     }}
                   >
-                    <option value=''>---Select---</option>
+                    <option value="">---Select---</option>
                     {categories &&
                       categories.map((cat) => (
                         <option
@@ -275,29 +386,29 @@ const AllCategory = (props) => {
                 <Grid item className={classes.flex1}>
                   {editMode ? (
                     <TextField
-                      helperText='Featured Image'
-                      name='update_image'
-                      variant='outlined'
+                      helperText="Featured Image"
+                      name="update_image"
+                      variant="outlined"
                       className={clsx(
                         classes.marginBottom,
                         classes.width100,
                         "top-helper"
                       )}
                       onChange={fileChange}
-                      type='file'
+                      type="file"
                     />
                   ) : (
                     <TextField
-                      helperText='Featured Image'
-                      name='image'
-                      variant='outlined'
+                      helperText="Featured Image"
+                      name="image"
+                      variant="outlined"
                       className={clsx(
                         classes.marginBottom,
                         classes.width100,
                         "top-helper"
                       )}
                       onChange={fileChange}
-                      type='file'
+                      type="file"
                     />
                   )}
                 </Grid>
@@ -314,9 +425,9 @@ const AllCategory = (props) => {
               </Grid>
 
               <TextField
-                label='Short Description'
-                name='description'
-                variant='outlined'
+                label="Short Description"
+                name="description"
+                variant="outlined"
                 className={clsx(classes.marginBottom, classes.width100)}
                 multiline
                 rows={3}
@@ -324,11 +435,11 @@ const AllCategory = (props) => {
                 onChange={handleChange}
               />
 
-              <Box component='div' mb={2}>
+              <Box component="div" mb={2}>
                 <TextInput
                   value={singlecategory.meta.title}
-                  label='Meta Title'
-                  name='metatitle'
+                  label="Meta Title"
+                  name="metatitle"
                   onInputChange={(e) => {
                     setSingleCategory({
                       ...singlecategory,
@@ -341,11 +452,11 @@ const AllCategory = (props) => {
                 />
               </Box>
 
-              <Box component='div' mb={2}>
+              <Box component="div" mb={2}>
                 <TextInput
                   value={singlecategory.meta.keywords}
-                  label='Meta Keyword'
-                  name='metakeyword'
+                  label="Meta Keyword"
+                  name="metakeyword"
                   onInputChange={(e) => {
                     setSingleCategory({
                       ...singlecategory,
@@ -358,11 +469,11 @@ const AllCategory = (props) => {
                 />
               </Box>
 
-              <Box component='div' mb={2}>
+              <Box component="div" mb={2}>
                 <TextInput
                   value={singlecategory.meta.description}
-                  label='Meta Description'
-                  name='metadescription'
+                  label="Meta Description"
+                  name="metadescription"
                   onInputChange={(e) => {
                     setSingleCategory({
                       ...singlecategory,

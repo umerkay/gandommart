@@ -39,6 +39,7 @@ const AllCustomers = () => {
   const Customers = useSelector((state) => state.customers);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [selected, setSelected] = useState([]);
 
   useEffect(() => {
     if (isEmpty(Customers.customers)) {
@@ -80,6 +81,45 @@ const AllCustomers = () => {
                       Add Customer
                     </Button>
                   </Link>
+                  <Tooltip title="Delete Selected Entries" aria-label="delete">
+                    <IconButton
+                      aria-label="Delete"
+                      className={classes.deleteicon}
+                      onClick={() => {
+                        if (
+                          window.confirm(
+                            "Are you sure you want to delete selected items from database?"
+                          )
+                        )
+                          selected.forEach((datum) =>
+                            dispatch(customerDeleteAction(datum.id))
+                          );
+                      }}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </Tooltip>
+                  <span>
+                    <Button
+                      color="primary"
+                      className={classes.addUserBtn}
+                      size="small"
+                      variant="contained"
+                      disabled={!selected.length}
+                      style={{ marginRight: "1rem" }}
+                    >
+                      <CSVLink
+                        filename={
+                          "customers_" +
+                          new Date().toLocaleDateString() +
+                          ".csv"
+                        }
+                        data={selected}
+                      >
+                        Generate Selected Data CSV
+                      </CSVLink>
+                    </Button>
+                  </span>
                   <span>
                     <Button
                       color="primary"
@@ -95,7 +135,7 @@ const AllCustomers = () => {
                         }
                         data={Customers.customers}
                       >
-                        Download CSV
+                        Download CSV All Data
                       </CSVLink>
                     </Button>
                   </span>
@@ -110,7 +150,7 @@ const AllCustomers = () => {
                   ...c,
                   name: c.first_name + c.last_name,
                 }))}
-                field={"name"}
+                fields={["name", "email", "phone"]}
                 onQuery={(data) => setDataToShow(data)}
               ></SearchBar>
             </div>
@@ -119,8 +159,21 @@ const AllCustomers = () => {
                 <Table stickyHeader aria-label="customers-table" size="small">
                   <TableHead>
                     <TableRow>
+                      <TableCell>
+                        <input
+                          type="checkbox"
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setSelected([...dataToShow]);
+                            } else {
+                              setSelected([]);
+                            }
+                          }}
+                        ></input>
+                      </TableCell>
                       <TableCell>Name</TableCell>
                       <TableCell>Email</TableCell>
+                      <TableCell>Phone</TableCell>
                       <TableCell>Date</TableCell>
                       <TableCell>Actions</TableCell>
                     </TableRow>
@@ -134,9 +187,28 @@ const AllCustomers = () => {
                       .map((customer) => (
                         <TableRow key={customer.id} hover>
                           <TableCell>
+                            <input
+                              type="checkbox"
+                              checked={selected.includes(customer)}
+                              onChange={(e) => {
+                                if (
+                                  e.target.checked &&
+                                  !selected.includes(customer)
+                                ) {
+                                  setSelected([...selected, customer]);
+                                } else if (selected.includes(customer)) {
+                                  setSelected(
+                                    selected.filter((s) => s != customer)
+                                  );
+                                }
+                              }}
+                            ></input>
+                          </TableCell>
+                          <TableCell>
                             {customer.first_name + " " + customer.last_name}
                           </TableCell>
                           <TableCell>{customer.email}</TableCell>
+                          <TableCell>{customer.phone}</TableCell>
                           <TableCell>
                             {convertDateToStringFormat(customer.date)}
                           </TableCell>

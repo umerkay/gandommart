@@ -23,10 +23,12 @@ import { isEmpty } from "../../utils/helper";
 import Alert from "../utils/Alert";
 import Loading from "../utils/loading";
 import DeleteIcon from "@material-ui/icons/Delete";
+import { useDispatch, useSelector } from "react-redux";
 import EditIcon from "@material-ui/icons/Edit";
 import viewStyles from "../viewStyles";
 import { convertDateToStringFormat } from "../utils/convertDate";
 import { CSVLink } from "react-csv";
+import SearchBar from "../components/SearchBar";
 
 const AllOrders = (props) => {
   const classes = viewStyles();
@@ -39,6 +41,17 @@ const AllOrders = (props) => {
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const dispatch = useDispatch();
+
+  const [selected, setSelected] = React.useState([]);
+  const [dataToShow, setDataToShow] = React.useState(props.orders.orders);
+  dataToShow.forEach((datum) => {
+    datum.category = datum.categoryId.map((cat) => cat.name).join(", ");
+    datum["brand name"] = datum.brand.name;
+  });
+  useEffect(() => {
+    setDataToShow(props.orders.orders);
+  }, [props.orders]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -60,27 +73,76 @@ const AllOrders = (props) => {
 
             <CardHeader
               action={
-                <span>
-                  <Button
-                    color="primary"
-                    className={classes.addUserBtn}
-                    size="small"
-                    variant="contained"
-                  >
-                    <CSVLink
-                      filename={
-                        "orders_" + new Date().toLocaleDateString() + ".csv"
-                      }
-                      data={props.orders.orders}
+                <>
+                  <Tooltip title="Delete Selected Entries" aria-label="delete">
+                    <IconButton
+                      aria-label="Delete"
+                      className={classes.deleteicon}
+                      onClick={() => {
+                        if (
+                          window.confirm(
+                            "Are you sure you want to delete selected items from database?"
+                          )
+                        )
+                          selected.forEach((datum) =>
+                            dispatch(orderDeleteAction(datum.id))
+                          );
+                      }}
                     >
-                      Download CSV
-                    </CSVLink>
-                  </Button>
-                </span>
+                      <DeleteIcon />
+                    </IconButton>
+                  </Tooltip>
+
+                  <span>
+                    <Button
+                      color="primary"
+                      className={classes.addUserBtn}
+                      size="small"
+                      variant="contained"
+                      disabled={!selected.length}
+                      style={{ marginRight: "1rem" }}
+                    >
+                      <CSVLink
+                        filename={
+                          "orders_" + new Date().toLocaleDateString() + ".csv"
+                        }
+                        data={selected}
+                      >
+                        Generate Selected Data CSV
+                      </CSVLink>
+                    </Button>
+                  </span>
+                  <span>
+                    <Button
+                      color="primary"
+                      className={classes.addUserBtn}
+                      size="small"
+                      variant="contained"
+                    >
+                      <CSVLink
+                        filename={
+                          "orders_" + new Date().toLocaleDateString() + ".csv"
+                        }
+                        data={props.orders.orders}
+                      >
+                        Download CSV All Data
+                      </CSVLink>
+                    </Button>
+                  </span>
+                </>
               }
               title="All Orders"
             />
             <Divider />
+
+            <div>
+              <SearchBar
+                data={props.orders.orders}
+                // field={"name"}
+                fields={["name", "category", "brand name"]}
+                onQuery={(data) => setDataToShow(data)}
+              ></SearchBar>
+            </div>
             <CardContent>
               <TableContainer className={classes.container}>
                 <Table
@@ -90,6 +152,18 @@ const AllOrders = (props) => {
                 >
                   <TableHead>
                     <TableRow>
+                      <TableCell>
+                        <input
+                          type="checkbox"
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setSelected([...dataToShow]);
+                            } else {
+                              setSelected([]);
+                            }
+                          }}
+                        ></input>
+                      </TableCell>
                       <TableCell>Name</TableCell>
                       <TableCell>Date</TableCell>
                       <TableCell>Status</TableCell>
@@ -98,13 +172,31 @@ const AllOrders = (props) => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {props.orders.orders
+                    {dataToShow
                       .slice(
                         page * rowsPerPage,
                         page * rowsPerPage + rowsPerPage
                       )
                       .map((order) => (
                         <TableRow key={order.id} hover>
+                          <TableCell>
+                            <input
+                              type="checkbox"
+                              checked={selected.includes(order)}
+                              onChange={(e) => {
+                                if (
+                                  e.target.checked &&
+                                  !selected.includes(order)
+                                ) {
+                                  setSelected([...selected, order]);
+                                } else if (selected.includes(order)) {
+                                  setSelected(
+                                    selected.filter((s) => s != order)
+                                  );
+                                }
+                              }}
+                            ></input>
+                          </TableCell>
                           <TableCell>
                             {order.shipping.firstname +
                               " " +
