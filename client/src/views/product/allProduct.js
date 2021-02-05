@@ -43,7 +43,7 @@ const AllProduct = () => {
   const [dataToShow, setDataToShow] = useState(products.products);
   dataToShow.forEach((product) => {
     product.category = product.categoryId.map((cat) => cat.name).join(", ");
-    product["brand name"] = product.brand.name;
+    product["brand name"] = product.brand?.name;
   });
   useEffect(() => {
     setDataToShow(products.products);
@@ -217,7 +217,7 @@ const AllProduct = () => {
                             {convertDateToStringFormat(product.date)}
                           </TableCell>
                           <TableCell>{product.category}</TableCell>
-                          <TableCell>{product.brand.name}</TableCell>
+                          <TableCell>{product.brand?.name}</TableCell>
                           <TableCell>
                             <Tooltip title="Edit Product" aria-label="edit">
                               <IconButton
