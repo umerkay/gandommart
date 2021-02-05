@@ -174,6 +174,7 @@ const AllProduct = () => {
                       <TableCell>Date</TableCell>
                       <TableCell>Category</TableCell>
                       <TableCell>Brand</TableCell>
+                      <TableCell>Status</TableCell>
                       <TableCell>Actions</TableCell>
                     </TableRow>
                   </TableHead>
@@ -218,6 +219,7 @@ const AllProduct = () => {
                           </TableCell>
                           <TableCell>{product.category}</TableCell>
                           <TableCell>{product.brand?.name}</TableCell>
+                          <TableCell>{product.status}</TableCell>
                           <TableCell>
                             <Tooltip title="Edit Product" aria-label="edit">
                               <IconButton
