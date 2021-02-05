@@ -96,7 +96,7 @@ const Footer = () => {
           <Typography variant="body1" className="copyright-text">
             Copyright © 2020{" "}
             <a
-              href="https://www.hbwebsol.com/"
+              href=""
               target="_blank"
               rel="noopener noreferrer"
             >
