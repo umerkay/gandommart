@@ -29,6 +29,46 @@ const getTree = async (id) => {
   return Promise.resolve(allids);
 };
 
+
+const deleteProductFunction = async (root, args, { id }) => {
+      checkToken(id);
+      try {
+        const product = await Product.findByIdAndRemove(args.id);
+        if (product) {
+          if (product.feature_image) {
+            // imageUnlink(product.feature_image);
+          }
+
+          if (product.gallery_image) {
+            for (let i in product.gallery_image) {
+              // imageUnlink(product.gallery_image[i]);
+            }
+          }
+
+          const variations = await ProductAttributeVariation.find({
+            product_id: args.id,
+          });
+
+          await ProductAttributeVariation.deleteMany({
+            product_id: args.id,
+          });
+
+          for (const variation of variations) {
+            if (variation.image) {
+              // imageUnlink(variation.image);
+            }
+          }
+
+          const products = await Product.find({});
+          return products || [];
+        }
+        throw putError("Product not exist");
+      } catch (error) {
+        error = checkError(error);
+        throw new Error(error.custom_message);
+      }
+    }
+
 module.exports = {
   Query: {
     productCategories: async (root, args) => {
@@ -514,6 +554,9 @@ module.exports = {
         throw new Error(error.custom_message);
       }
     },
+    addProductsMany: async function (root, args, {id}) {
+      args.products.forEach(product => this.addProduct(root, {...args, ...product}, {id}));
+    },
     addProduct: async (root, args, { id }) => {
       checkToken(id);
       try {
@@ -775,43 +818,10 @@ module.exports = {
         throw new Error(error.custom_message);
       }
     },
-    deleteProduct: async (root, args, { id }) => {
-      checkToken(id);
-      try {
-        const product = await Product.findByIdAndRemove(args.id);
-        if (product) {
-          if (product.feature_image) {
-            imageUnlink(product.feature_image);
-          }
-
-          if (product.gallery_image) {
-            for (let i in product.gallery_image) {
-              imageUnlink(product.gallery_image[i]);
-            }
-          }
-
-          const variations = await ProductAttributeVariation.find({
-            product_id: args.id,
-          });
-
-          await ProductAttributeVariation.deleteMany({
-            product_id: args.id,
-          });
-
-          for (const variation of variations) {
-            if (variation.image) {
-              imageUnlink(variation.image);
-            }
-          }
-
-          const products = await Product.find({});
-          return products || [];
-        }
-        throw putError("Product not exist");
-      } catch (error) {
-        error = checkError(error);
-        throw new Error(error.custom_message);
-      }
+    deleteProductsMany: async function (root, args, {id}) {
+      args.ids.forEach(_id => deleteProductFunction(root, {...args, id: _id}, {id}));
     },
+    deleteProduct: deleteProductFunction
   },
 };
+

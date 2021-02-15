@@ -185,6 +185,15 @@ const GET_PRODUCT = gql`
   ${PRODUCT_TILE_DATA}
 `;
 
+const ADD_PRODUCTS_MANY = gql`
+  mutation(
+    $products: customArray
+  ) {
+    ...ProductTile
+  }
+  ${PRODUCT_TILE_DATA}
+`;
+
 const ADD_PRODUCT = gql`
   mutation(
     $name: String
@@ -304,8 +313,17 @@ const DELETE_PRODUCT = gql`
   ${PRODUCT_TILE_DATA}
 `;
 
+const DELETE_PRODUCTS_MANY = gql`
+  mutation($id: customArray!) {
+    deleteProductsMany(ids: $id) {
+      id
+    }
+  }
+`;
+
 export {
   GET_CATEGORIES,
+  DELETE_PRODUCTS_MANY,
   GET_CATEGORY,
   ADD_CATEGORY,
   UPDATE_CATEGORY,

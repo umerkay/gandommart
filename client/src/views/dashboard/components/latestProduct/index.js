@@ -65,7 +65,7 @@ const LatestProducts = ({ products, loader }) => {
         <>
           <Divider />
           <CardActions className="flex-end">
-            <Link to="/all-products">
+            <Link to="/admin/all-products">
               <Button color="primary" size="small" variant="text">
                 View all <ArrowRightIcon />
               </Button>

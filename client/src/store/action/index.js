@@ -30,6 +30,7 @@ import {
   productAddAction,
   productDeleteAction,
   productUpdateAction,
+  productsDeleteManyAction
 } from "./productAction";
 
 import {
@@ -214,4 +215,5 @@ export {
   attributeAddAction,
   attributeUpdateAction,
   attributeDeleteAction,
+  productsDeleteManyAction
 };

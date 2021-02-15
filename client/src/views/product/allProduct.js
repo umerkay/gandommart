@@ -19,7 +19,7 @@ import {
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { productsAction, productDeleteAction } from "../../store/action";
+import { productsAction, productDeleteAction, productsDeleteManyAction } from "../../store/action";
 import jumpTo from "../../utils/navigation";
 import ImageIcon from "@material-ui/icons/Image";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -92,9 +92,10 @@ const AllProduct = () => {
                             "Are you sure you want to delete selected items from database?"
                           )
                         )
-                          selected.forEach((datum) =>
-                            dispatch(productDeleteAction(datum.id))
-                          );
+                          // selected.forEach((datum) =>
+                          //   dispatch(productDeleteAction(datum.id))
+                          // );
+                        dispatch(productsDeleteManyAction(selected.map(datum => datum.id)));
                       }}
                     >
                       <DeleteIcon />

@@ -160,6 +160,9 @@ module.exports = gql`
     ): [productCategory]
     deleteProductCategory(id: ID!): [productCategory]
     addTree(name: String, parentname: String): productCategory
+    addProductsMany(
+      products: customArray
+    ): [Product]
     addProduct(
       name: String
       categoryId: customArray
@@ -209,5 +212,6 @@ module.exports = gql`
       combinations: [customObject]
     ): [Product]
     deleteProduct(id: ID!): [Product]
+    deleteProductsMany(ids: customArray): [Product]
   }
 `;

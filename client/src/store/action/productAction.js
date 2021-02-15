@@ -8,6 +8,7 @@ import {
   ADD_PRODUCT,
   UPDATE_PRODUCT,
   DELETE_PRODUCT,
+  DELETE_PRODUCTS_MANY
 } from "../../queries/productQuery";
 
 import { ALERT_SUCCESS } from "../reducers/alertReducer";
@@ -210,7 +211,7 @@ export const productAddAction = (object) => (dispatch) => {
           payload: {},
         });
 
-        jumpTo("/all-products");
+        jumpTo("/admin/all-products");
 
         return dispatch({
           type: ALERT_SUCCESS,
@@ -238,6 +239,56 @@ export const productAddAction = (object) => (dispatch) => {
       });
     });
 };
+
+// export const productsAddManyAction = (arg) => (dispatch) => {
+//   dispatch({
+//     type: PRODUCT_LOADING,
+//   });
+//   arg.products.forEach(object => {if(object.brand && object.brand.value){
+//     object.brand = object.brand.value;
+//   }});
+  
+//   mutation(ADD_PRODUCT, object)
+//     .then((response) => {
+//       if (response) {
+//         dispatch({
+//           type: PRODUCTS_SUCCESS,
+//           payload: response.data.addProduct,
+//         });
+
+//         dispatch({
+//           type: TINYMCE_DESCRIPTION_NULL,
+//           payload: {},
+//         });
+
+//         jumpTo("/admin/all-products");
+
+//         return dispatch({
+//           type: ALERT_SUCCESS,
+//           payload: {
+//             boolean: true,
+//             message: "Product added successfully",
+//             error: false,
+//           },
+//         });
+//       }
+//     })
+//     .catch((error) => {
+//       dispatch({
+//         type: PRODUCT_FAIL,
+//       });
+
+//       dispatch({
+//         type: TINYMCE_DESCRIPTION_NULL,
+//         payload: {},
+//       });
+
+//       return dispatch({
+//         type: ALERT_SUCCESS,
+//         payload: { boolean: true, message: error, error: true },
+//       });
+//     });
+// };
 
 export const productUpdateAction = (object) => (dispatch) => {
   dispatch({
@@ -297,6 +348,39 @@ export const productDeleteAction = (id) => (dispatch) => {
           payload: {
             boolean: true,
             message: "Product deleted successfully",
+            error: false,
+          },
+        });
+      }
+    })
+    .catch((error) => {
+      dispatch({
+        type: PRODUCT_FAIL,
+      });
+      return dispatch({
+        type: ALERT_SUCCESS,
+        payload: { boolean: true, message: error, error: true },
+      });
+    });
+};
+
+export const productsDeleteManyAction = (ids) => (dispatch) => {
+  dispatch({
+    type: PRODUCT_LOADING,
+  });
+  mutation(DELETE_PRODUCTS_MANY, { ids, id: ids })
+    .then((response) => {
+      if (response) {
+        // dispatch({
+        //   type: PRODUCTS_SUCCESS,
+        //   payload: response.data.deleteProduct,
+        // });
+    window.location.reload(true);
+        return dispatch({
+          type: ALERT_SUCCESS,
+          payload: {
+            boolean: true,
+            message: "Products deleted successfully",
             error: false,
           },
         });
